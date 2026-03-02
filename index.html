@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HellYell导航 - 让美好发声</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fontsapi.zeoseven.com/442/main/result.css" onload="this.rel='stylesheet'" rel="preload" as="style" crossorigin />
+<noscript><link rel="stylesheet" href="https://fontsapi.zeoseven.com/442/main/result.css" /></noscript>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Maple Mono NF CN";
+            font-weight: normal;
+        }
+
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #e74c3c;
+            --bg-color: #f8f9fa;
+            --card-color: #ffffff;
+            --text-color: #333333;
+            --text-light: #666666;
+            --border-color: #eaeaea;
+            --hover-color: #f1f5f9;
+            --header-height: 70px;
+            --nav-height: 60px;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-top: calc(var(--header-height) + 80px); /* 增加预留高度 */
+        }
+
+        /* 顶部标题栏 - 固定但不跟随滚动 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background-color: var(--card-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+
+        .site-name {
+            font-size: 20px;
+            color: var(--text-color);
+            margin-left: 10px;
+        }
+
+        /* 浮动导航栏 - 只导航栏跟随滚动 */
+        .nav-container {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            min-height: var(--nav-height); /* 允许高度扩展 */
+            height: auto; /* 自动高度 */
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-scrolled {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100%;
+            display: block; /* 改为块级显示 */
+            padding: 10px 20px; /* 增加上下内边距 */
+            align-items: center;
+            overflow-x: auto;
+            padding: 0 20px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .nav-inner::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-category {
+            display: flex;
+            flex-wrap: wrap; /* 添加换行 */
+            gap: 8px; /* 增加间距 */
+            row-gap: 8px; /* 行间距 */
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-radius: 20px;
+            color: var(--text-light);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .category-btn:hover {
+            color: var(--primary-color);
+            background-color: var(--hover-color);
+        }
+
+        .category-btn.active {
+            color: var(--primary-color);
+            background-color: rgba(74, 111, 165, 0.1);
+            font-weight: 600;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* 分类区域 */
+        .category-section {
+            margin-bottom: 50px;
+            scroll-margin-top: calc(var(--header-height) + 100px); /* 增加偏移量 */
+        }
+
+        .category-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--text-color);
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .category-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        /* 网站网格 */
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .site-card {
+            background-color: var(--card-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            height: 100%;
+            position: relative;
+        }
+
+        .site-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .site-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+            padding: 20px;
+            position: relative;
+        }
+
+        .site-link:after {
+            content: "↗";
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--text-light);
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .site-card:hover .site-link:after {
+            opacity: 1;
+        }
+
+        .site-name-card {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--text-color);
+            line-height: 1.4;
+        }
+
+        .site-desc {
+            font-size: 14.5px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 0px;
+        }
+
+        /* 页脚 */
+        .footer {
+            margin-top: 60px;
+            padding: 30px 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+        }
+
+        /* 向上箭头按钮 */
+        .top-arrow {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 998;
+            box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+        }
+
+        .top-arrow.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .top-arrow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(74, 111, 165, 0.4);
+            background-color: var(--secondary-color);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .sites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .header {
+                padding: 0 20px;
+            }
+            
+            .nav-inner {
+                padding: 0 15px;
+            }
+            
+            .category-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .category-title {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                height: 60px;
+                padding: 0 15px;
+            }
+            
+            .logo {
+                font-size: 18px;
+            }
+            
+            .site-name {
+                font-size: 18px;
+            }
+            
+            .nav-container {
+                top: 60px;
+            }
+            
+            body {
+                padding-top: calc(60px + var(--nav-height));
+            }
+            
+            .sites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .site-link {
+                padding: 20px;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .category-title {
+                font-size: 22px;
+            }
+            
+            .top-arrow {
+                width: 45px;
+                height: 45px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 20px;
+            }
+            
+            /* 手机端导航栏样式修改 */
+            .nav-container {
+                top: 60px;
+                height: auto;
+                max-height: 0; /* 初始隐藏 */
+                overflow: hidden;
+                transition: max-height 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .nav-container.mobile-open {
+                max-height: 400px; /* 展开时的高度 */
+                overflow-y: auto;
+            }
+
+            .nav-inner {
+                padding: 0 15px;
+            }
+
+            /* 添加手机端菜单按钮 */
+            .mobile-menu-btn {
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                background-color: var(--primary-color);
+                border-radius: 8px;
+                display: none; /* 默认隐藏，手机端显示 */
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 1002;
+                border: none;
+                box-shadow: 0 2px 8px rgba(74, 111, 165, 0.3);
+            }
+
+            /* 手机端显示菜单按钮 */
+            @media (max-width: 768px) {
+                .mobile-menu-btn {
+                    display: flex;
+                }
+                
+                body {
+                    padding-top: 60px; /* 只需要标题栏的高度 */
+                }
+                
+                /* 确保导航栏位置正确 */
+                .nav-container {
+                    top: 60px;
+                }
+                
+                /* 可能需要调整这个值 */
+                .category-section {
+                    scroll-margin-top: 80px;
+                }
+                
+                .category-section {
+                    scroll-margin-top: 80px; /* 减少偏移量 */
+                }
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sites-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-category {
+                gap: 3px;
+            }
+            
+            .category-btn {
+                padding: 8px 14px;
+                font-size: 13.5px;
+            }
+            
+            .category-title {
+                font-size: 20px;
+            }
+            
+            .category-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+                margin-right: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部标题栏 -->
+    <header class="header">
+        <div class="logo">
+            <span>HellYell导航</span>
+        </div>
+        <div class="site-name"></div>
+    </header>
+    
+    <!-- 手机端菜单按钮 -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- 浮动导航栏 -->
+    <nav class="nav-container" id="navContainer">
+        <div class="nav-inner">
+            <div class="nav-category" id="navCategory">
+                <!-- 分类按钮将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- 向上箭头按钮 -->
+    <div class="top-arrow" id="topArrow">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="main-content" id="mainContent">
+        <!-- 分类区域将通过JavaScript动态生成 -->
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>HellYell导航 - 让美好发声 Copyright © 2016 - 2026</p>
+        <p></p>
+        <p style="margin-top: 15px; font-size: 13px;"></p>
+    </footer>
+
+    <script>
+        // 导航数据
+        const categories = [
+            {
+                id: "system-download",
+                name: "系统下载&激活",
+                icon: "fas fa-download",
+                sites: [
+                    { name: "MSDN-山己几子木", desc: "原版系统下载", url: "https://msdn.sjjzm.com/win11.html" },
+                    { name: "HelloWindows", desc: "原版系统下载", url: "https://hellowindows.cn" },
+                    { name: "ITELLYOU", desc: "原版系统下载", url: "https://next.itellyou.cn" },
+                    { name: "又要重装", desc: "原版系统下载", url: "https://www.yyczxt.com/original.html" },
+                    { name: "MAS", desc: "原版系统下载", url: "https://massgrave.dev/genuine-installation-media" },
+                    { name: "LTSC原版", desc: "MAS 集合", url: "https://massgrave.dev/windows_ltsc_links" },
+                    { name: "LTSC原版", desc: "莫老师Win11 2024 x64夸克盘", url: "https://pan.quark.cn/s/5466e6f1d59b" },
+                    { name: "LTSC优化版", desc: "果核Win11 26100.2033百度ghxi", url: "https://pan.baidu.com/s/17Z_awcv1Hy89EEvxaSyzdQ" },
+                    { name: "Win10精简版", desc: "果核123盘", url: "https://www.123pan.com/s/HQeA-w71Sh" },
+                    { name: "内部版本：UUP dump", desc: "", url: "https://uupdump.net/" },
+                    { name: "一行命令永久激活", desc: "MAS官网", url: "https://massgrave.dev" },
+                    { name: "一行命令永久激活", desc: "MAS GitHub🚀", url: "https://github.com/massgravel/Microsoft-Activation-Scripts" },
+                    { name: "HEU KMS Activator", desc: "GitHub zbezj大神🚀", url: "https://github.com/zbezj/HEU_KMS_Activator" },
+                    { name: "HEU KMS Activator", desc: "果核分流", url: "https://www.ghxi.com/heukmsactivator.html" }
+                ]
+            },
+            {
+                id: "system-installation",
+                name: "系统安装&增强",
+                icon: "fas fa-cogs",
+                sites: [
+                    { name: "微PE", desc: "系统安装工具", url: "https://www.wepe.com.cn" },
+                    { name: "CMDPE", desc: "系统安装工具", url: "https://www.cmdpe.com" },
+                    { name: "intel英特尔", desc: "英特尔官方驱动程序和软件", url: "https://www.intel.cn/content/www/cn/zh/download-center/home.html" },
+                    { name: "IObit Driver Booster Pro", desc: "中文破解版驱动更新软件 蓝奏8f3n", url: "https://macace.lanzouj.com/b0131o8sb" },
+                    { name: "苹果Boot Camp驱动", desc: "苹果系统驱动", url: "https://www.applex.net/pages/bootcamp" },
+                    { name: "禁止Win更新工具", desc: "Windows update blocker", url: "https://www.sordum.org/9470/windows-update-blocker-v1-8/" },
+                    { name: "卸载、清除垃圾工具", desc: "HiBit Uninstaller", url: "https://hibitsoft.ir/Uninstaller.html" },
+                    { name: "图吧工具箱", desc: "EXE安装版 夸克盘", url: "https://pan.quark.cn/s/eb2796f859c0" },
+                    { name: "硬件检测工具", desc: "423down集合 蓝奏盘", url: "https://423down.lanzouo.com/b0f1dp0mh" },
+                    { name: "开始菜单增强工具", desc: "蓝奏盘提取码 49kx", url: "https://macace.lanzouj.com/b0135gkja" },
+                    { name: "Windows界面自定义工具", desc: "Windhawk官网", url: "https://windhawk.net" },
+                    { name: "必装工具包：阿刚同学", desc: "蓝奏盘提取码 eh86", url: "https://isharepc.lanzoul.com/b030pe1f4j" },
+                    { name: "传输工具：LocalSend", desc: "局域网神器", url: "https://localsend.org" },
+                    { name: "云鸽", desc: "文件传输助手网页版", url: "https://yunge.in/" },
+                    { name: "杀毒工具：火绒安全", desc: "安全软件", url: "https://www.huorong.cn" },
+                    { name: "下载工具：IDM中文破解版", desc: "Internet Download Manager", url: "https://www.cmdpe.com/post/53.html" },
+                    { name: "高精度IP地址归属地查询", desc: "全球小鸡监控平台", url: "https://ping0.cc/" },
+                    { name: "快捷键备忘录", desc: "快捷键记录工具", url: "https://hotkeycheatsheet.com/zh" },
+                    { name: "Anytxt文档内容搜索", desc: "强大安全的本机离线搜索软件", url: "https://anytxt.net.cn/download.html" },
+                ]
+            },
+            {
+                id: "wps-office",
+                name: "办公&输入法",
+                icon: "fas fa-keyboard",
+                sites: [
+                    { name: "WPS - 官网", desc: "", url: "https://www.wps.cn" },
+                    { name: "WPS - 电信定制版", desc: "电信定制版", url: "https://www.hezipie.com/archives/4874" },
+                    { name: "WPS - 粤政易定制版", desc: "粤政易定制版", url: "https://xtbg.gdzwfw.gov.cn/wpspkg/wpsupdate/prd-gdzwfw-pc-wps.exe" },
+                    { name: "Office Tool Plus", desc: "Office部署工具", url: "https://otp.landian.vip/zh-cn/" },
+                    { name: "C2R Install", desc: "Office安装工具", url: "https://www.ghxi.com/officec2rins.html" },
+                    { name: "Office 2016 精简版", desc: "仅200M", url: "https://www.ghxi.com/office4n1.html" },
+                    { name: "微信输入法 - 官网", desc: "微信官方输入法", url: "https://z.weixin.qq.com" },
+                    { name: "搜狗输入法", desc: "去广告精简优化版", url: "https://www.cmdpe.com/post/346.html" },
+                    { name: "搜狗输入法white皮肤", desc: "", url: "https://pinyin.sogou.com/d/skins/download.php?skin_id=525064&rf=detail" },
+                    { name: "搜狗输入法black皮肤", desc: "", url: "https://pinyin.sogou.com/d/skins/download.php?skin_id=525008&rf=detail" }
+                ]
+            },
+            {
+                id: "compression-tools",
+                name: "压缩&梯子",
+                icon: "fas fa-file-archive",
+                sites: [
+                    { name: "WinRAR 7.20_x64 汉化版", desc: "无广告 蓝奏盘密码6666", url: "https://iptvindex.lanzn.com/itS643i11okd" },
+                    { name: "WinRAR及rarreg.key", desc: "rarreg.key享免费注册", url: "https://iptvindex.lanzn.com/iZuAg3i2zdhe" },
+                    { name: "7-Zip 开源免费", desc: "", url: "https://sparanoid.com/lab/7z/" },
+                    { name: "Bandizip Pro 中文破解版", desc: "", url: "https://www.cmdpe.com/post/81.html" },
+                    { name: "梯子工具karing", desc: "", url: "https://karing.app/download/" },
+                    { name: "免费V2Ray列表", desc: "", url: "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt" }
+                ]
+            },
+            {
+                id: "entertainment",
+                name: "视听娱乐",
+                icon: "fas fa-tv",
+                sites: [
+                    { name: "IPTVindex", desc: "直播点播一站搞定", url: "https://iptvindex.com" },
+                    { name: "MVCAT", desc: "电影推荐", url: "https://www.mvcat.com" },
+                    { name: "央视影音", desc: "v6.0.4.0绿色版 访问/解压码52pj", url: "https://wxjyxlwmh.lanzouo.com/b00momfyji" },
+                    { name: "磁力熊", desc: "豆瓣高分电影1080P下载", url: "https://www.cilixiong.com" },
+                    { name: "短剧网", desc: "免费观看完整全集短剧", url: "https://www.duanjuwang.com" },
+                    { name: "AlgerMusicPlayer", desc: "全平台音乐播放器", url: "http://mc.alger.fun/" },
+                    { name: "MusicFree", desc: "插件化音乐播放器", url: "https://musicfree.catcat.work/" },
+                    { name: "SPlayer", desc: "高颜值无广告音乐播放神器", url: "https://splayer.imsyy.top/" },
+                    { name: "种子音乐", desc: "热门歌曲免费在线听", url: "https://zz123.com/" },
+                    { name: "清风DJ音乐网", desc: "在线免费听DJ歌曲", url: "https://www.vvvdj.com/" },
+                    { name: "DJ哟哟音乐网", desc: "高音质DJ舞曲", url: "https://www.djuu.com/" },
+                    { name: "Jellyfin", desc: "The Free Software Media System", url: "https://jellyfin.org" }
+                ]
+            },
+            {
+                id: "image-processing",
+                name: "图像处理",
+                icon: "fas fa-image",
+                sites: [
+                    { name: "Adobe Photoshop 2025", desc: "26.3中文破解版", url: "https://www.shephe.com/resources/adobe-photoshop-free-download/" },
+                    { name: "Adobe Photoshop 2022", desc: "23.1.1绿色版", url: "https://www.ghxi.com/ps2022green.html" },
+                    { name: "Adobe Photoshop 2020", desc: "21.2绿色精简版", url: "https://www.ghxi.com/ps2020green.html" },
+                    { name: "Adobe Photoshop CS5", desc: "绿色精简版", url: "https://www.ghxi.com/pscs5green.html" },
+                    { name: "XnView中文版", desc: "看图软件", url: "https://www.423down.com/4522.html" },
+                    { name: "FastStone Capture", desc: "截图录屏工具", url: "https://www.423down.com/660.html" },
+                    { name: "美图秀秀", desc: "去广告纯净版", url: "https://www.ddooo.com/softdown/203035.htm" },
+                    { name: "PotPlayer", desc: "视频播放 官网", url: "https://potplayer.daum.net/?lang=zh_CN" },
+                    { name: "剪映 VIP破解版", desc: "视频编辑软件", url: "https://www.ai-hd.com/article/df3a220f-c7f6-4601-9cd7-8bde2b9d5fcd" },
+                    { name: "m3u8-downloader🚀", desc: "视频下载工具", url: "https://github.com/yangwk/m3u8-downloader" },
+                    { name: "完美解码", desc: "多媒文件软硬解播放的影音解码包", url: "https://www.wmzhe.com/soft-13163.html#download_group" }
+                ]
+            },
+            {
+                id: "software-download",
+                name: "软件下载",
+                icon: "fas fa-download",
+                sites: [
+                    { name: "果核剥壳", desc: "", url: "https://www.ghxi.com" },
+                    { name: "异次元软件世界", desc: "", url: "https://www.iplaysoft.com" },
+                    { name: "423Down", desc: "", url: "https://www.423down.com" },
+                    { name: "无忧启动论坛", desc: "", url: "https://bbs.wuyou.net" },
+                    { name: "GitHub", desc: "", url: "https://github.com" },
+                    { name: "鸭先知", desc: "", url: "https://www.yxzhi.com/" },
+                    { name: "软仓", desc: "", url: "https://www.ruancang.net" },
+                    { name: "捡屁笑的小站", desc: "", url: "https://jpsmile.com/" },
+                    { name: "莫老师的附件表", desc: "", url: "https://www.zxmls.lol/" },
+                    { name: "软件SOS 玩机手册", desc: "", url: "http://www.rjsos.com/" },
+                    { name: "易破解 亿破姐", desc: "", url: "https://www.ypojie.com" },
+                    { name: "个人笔记", desc: "", url: "https://www.8uid.com/" }
+                ]
+            },
+            {
+                id: "wallpaper",
+                name: "壁纸",
+                icon: "fas fa-image",
+                sites: [
+                    { name: "WallHere 壁纸库", desc: "", url: "https://wallhere.com/" },
+                    { name: "彼岸桌面", desc: "", url: "https://www.netbian.com" },
+                    { name: "墨鱼部落格", desc: "", url: "https://www.moyublog.com/freewallpapers/" },
+                    { name: "全面屏手机壁纸", desc: "", url: "https://m.bcoderss.com/" },
+                    { name: "Random Wallpapers随机壁纸", desc: "", url: "https://hdqwalls.com/random-wallpapers" },
+                    { name: "壁纸生成器", desc: "", url: "https://app.haikei.app/" },
+                    { name: "日式JK风格壁纸", desc: "", url: "https://www.jk.rs/" }
+                ]
+            },
+            {
+                id: "official-professional",
+                name: "官方专业",
+                icon: "fas fa-landmark",
+                sites: [
+                    { name: "识典古籍", desc: "", url: "https://www.shidianguji.com" },
+                    { name: "中国医药信息查询平台", desc: "", url: "https://www.dayi.org.cn" },
+                    { name: "中国国家数字图书馆", desc: "", url: "https://www.nlc.cn" },
+                    { name: "专业研报平台", desc: "", url: "https://report.seedsufe.com/" },
+                    { name: "中华珍宝馆", desc: "", url: "https://www.ltfc.net/" },
+                    { name: "标准地图服务系统", desc: "", url: "http://bzdt.ch.mnr.gov.cn/" },
+                    { name: "博物馆年度报告信息系统", desc: "", url: "http://nb.ncha.gov.cn/museum.html?page=1&nianfen=2022&showModel=list&order=ORDER%20BY%20NB_CPZS%20DESC" },
+                    { name: "非遗数字博物馆", desc: "", url: "https://www.ihchina.cn" },
+                    { name: "麦田艺术", desc: "无水印高清油画免费下载", url: "https://www.nbfox.com" },
+                    { name: "中国大学MOOC", desc: "优质在线课程学习平台", url: "https://www.icourse163.org/" },
+                    { name: "国家标准全文公开系统", desc: "权威 及时 便捷 免费", url: "https://openstd.samr.gov.cn/bzgk/gb/std_list_type?p.p1=1&p.p90=circulation_date&p.p91=desc" },
+                    { name: "Magazine Reader", desc: "外文期刊杂志在线免费看", url: "https://mgreader.com/" }
+                ]
+            },
+            {
+                id: "interesting-websites",
+                name: "有趣网站",
+                icon: "fas fa-smile",
+                sites: [
+                    { name: "食用手册", desc: "根据食材定菜谱，解决选择困难症", url: "https://cook.yunyoujun.cn/" },
+                    { name: "Windy全球天气", desc: "多维度 超直观 要风得风 要雨得雨", url: "https://www.windy.com" },
+                    { name: "观沧海", desc: "地图分享知识", url: "https://www.ageeye.cn/map" },
+                    { name: "末日电台", desc: "嘈杂的电台信号让人毛骨悚然", url: "https://frequency2156.com/" },
+                    { name: "Time.is", desc: "全球精确时间", url: "https://time.is/zh/" },
+                    { name: "护照指数", desc: "2024世界护照尽在掌握中", url: "https://www.passportindex.org/cn/" },
+                    { name: "老游戏在线玩", desc: "怀旧游戏平台", url: "https://zaixianwan.app/" },
+                    { name: "学种菜网", desc: "自学种植蔬菜、水果、粮食、花草", url: "https://www.xuezhongcai.com/" },
+                    { name: "水经微图", desc: "高清卫星地图", url: "https://map.wemapgis.com/" },
+                    { name: "在线养仓鼠", desc: "虚拟宠物", url: "https://hammyhome.com/" },
+                    { name: "模拟数字钟", desc: "数字时钟模拟", url: "https://tools.jishusongshu.com/rotate-clock.html" },
+                    { name: "假装在升级", desc: "FakeUpdate", url: "https://fakeupdate.net" },
+                    { name: "无聊网站任意门", desc: "随机有趣网站", url: "https://theuselessweb.com" },
+                    { name: "Flightradar24", desc: "实时跟踪全球航班动向飞行轨迹", url: "https://www.flightradar24.com" },
+                    { name: "Poki宝玩", desc: "在线小游戏", url: "https://poki.com/zh" },
+                    { name: "全历史", desc: "历史知识平台", url: "https://www.allhistory.com" },
+                    { name: "自定义白噪音", desc: "白噪音生成器", url: "https://asoftmurmur.com/" },
+                    { name: "奇趣网站收藏家", desc: "有趣网站收藏", url: "https://fuun.fun/" },
+                    { name: "学子备战墙", desc: "初高中学习资源", url: "https://www.xzbzq.com/" },
+                    { name: "有用经验", desc: "生活经验分享", url: "https://yyjingyan.com/" },
+                    { name: "最佳平替", desc: "开心就好", url: "https://pingti.app/" },
+                    { name: "神奇的视觉差", desc: "视觉差效果展示", url: "https://optical.toys/" }
+                ]
+            },
+            {
+                id: "audio-video-resources",
+                name: "影音资源",
+                icon: "fas fa-film",
+                sites: [
+                    { name: "SnapAny", desc: "万能视频图片解析下载", url: "https://snapany.com/zh" },
+                    { name: "DataTool", desc: "在线视频下载器", url: "https://www.datatool.vip/" },
+                    { name: "小天在线工具", desc: "全网热门视频下载器", url: "https://www.xtdowner.com/video/" },
+                    { name: "cobalt", desc: "视频下载工具集合", url: "https://cobalt.tools/" },
+                    { name: "天天短剧库", desc: "短剧网盘下载", url: "https://www.kdocs.cn/l/cqRbhqazOZHP?R=L1MvMQ%3D%3D" },
+                    { name: "英语台词社", desc: "英语影视台词", url: "https://www.taicishe.com/" },
+                    { name: "Spotify 音乐下载", desc: "", url: "https://spotdownloader.com/" },
+                    { name: "77铃声网", desc: "免费手机铃声下载", url: "https://www.77ring.com/" },
+                    { name: "Ringer", desc: "在线制作手机铃声", url: "https://ringer.org/zh/" },
+                    { name: "海洋听书网", desc: "有声小说", url: "http://www.ychy.org/" },
+                    { name: "SaltyLeo的书架", desc: "电子书资源", url: "https://book.tstrs.me/search" },
+                    { name: "小学生作文网", desc: "作文资源", url: "https://www.ppzuowen.com/" },
+                    { name: "八零电子书", desc: "小说免费下载", url: "https://txt80.cc/" },
+                    { name: "MUSICBED", desc: "版权音乐", url: "https://www.musicbed.com" },
+                    { name: "PremiumBeat", desc: "版权音乐", url: "https://www.premiumbeat.com/zh/" },
+                    { name: "Audiojungle", desc: "版权音乐", url: "https://elements.envato.com/" },
+                    { name: "POND5", desc: "版权音乐", url: "https://www.pond5.com" },
+                    { name: "Audio Library", desc: "版权音乐", url: "https://www.audiolibrary.com.co/" },
+                    { name: "Epidemic Sound", desc: "版权音乐", url: "https://www.epidemicsound.com/" }
+                ]
+            },
+            {
+                id: "url-navigation",
+                name: "网址导航",
+                icon: "fas fa-compass",
+                sites: [
+                    { name: "果核导航", desc: "收藏好网址", url: "https://dh.ghxi.com/" },
+                    { name: "喜欢书签", desc: "找网站更简单", url: "https://www.likebookmark.com/" },
+                    { name: "考拉新媒体", desc: "新媒体工具", url: "https://www.kaolamedia.com/" },
+                    { name: "简视频", desc: "视频创作导航", url: "https://www.aewz.com/" }
+                ]
+            },
+            {
+                id: "ai-tools",
+                name: "AI工具",
+                icon: "fas fa-robot",
+                sites: [
+                    { name: "即梦AI", desc: "一站式AI创作平台", url: "https://jimeng.jianying.com/ai-tool/home" },
+                    { name: "DeepSeek", desc: "探索未至之境", url: "https://chat.deepseek.com/" },
+                    { name: "豆包", desc: "字节跳动旗下AI智能助手", url: "https://www.doubao.com/chat/" },
+                    { name: "元宝", desc: "腾讯旗下高效AI助手", url: "https://yuanbao.tencent.com/chat/" },
+                    { name: "Raphael AI", desc: "免费无限制AI图像生成", url: "https://raphael.app/zh" },
+                    { name: "Kimi AI助手", desc: "", url: "https://www.kimi.com" },
+                    { name: "秘塔 AI搜索", desc: "", url: "https://metaso.cn" },
+                    { name: "AI工具集", desc: "", url: "https://ai-bot.cn/" },
+                    { name: "AI手册", desc: "", url: "https://aishouce.com/" },
+                    { name: "AI应用导航", desc: "", url: "https://www.aigc.wtf/" },
+                    { name: "SUNO🚀AI音乐生成", desc: "", url: "https://suno.com/" },
+                    { name: "AI扩图🚀", desc: "", url: "https://huggingface.co/spaces/fffiloni/diffusers-image-outpaint" },
+                    { name: "Converter App", desc: "语音转文字工具", url: "https://converter.app/cn/voice-text/" },
+                    { name: "文本对比工具", desc: "", url: "https://diffsuite.com/zh/" },
+                    { name: "VNote🚀", desc: "一个舒适的笔记平台", url: "https://github.com/vnotex/vnote/blob/master/README_zh_CN.md" },
+                    { name: "在线AI免费换脸", desc: "", url: "https://ai.138u.com/?utm_source=souluo" },
+                    { name: "AIO Search", desc: "种子搜索引擎", url: "http://www.aiosearch.com/" },
+                    { name: "NoxLink", desc: "免费永久短链接生成器", url: "https://noxlink.net/zh-CN" },
+                    { name: "AI PPT", desc: "免费在线AI一键生成PPT", url: "https://aipptmaker.ai/cn" },
+                    { name: "FreeCompress", desc: "随时随地压缩各种文件", url: "https://freecompress.com/zh-cn" },
+                    { name: "TableConvert", desc: "在线表格转换工具", url: "https://tableconvert.com/zh-cn/" },
+                    { name: "我的工具箱", desc: "各种工具集合", url: "https://toolgg.com/" },
+                    { name: "CloudConvert", desc: "各类在线文件转换", url: "hhttps://cloudconvert.com/" }
+                ]
+            },
+            {
+                id: "design-resources",
+                name: "设计资源",
+                icon: "fas fa-paint-brush",
+                sites: [
+                    { name: "iloveimg", desc: "在线编辑图像文件", url: "https://www.iloveimg.com/zh-cn" },
+                    { name: "书法迷", desc: "在线生成书法字体", url: "http://hao.shufami.com/" },
+                    { name: "在线PS", desc: "在线PS工具", url: "https://ps.gaoding.com/" },
+                    { name: "在线剪辑", desc: "音频 视频 PDF 转换工具", url: "https://mp3cut.net/cn/" },
+                    { name: "免费设计资源", desc: "", url: "https://resourceboy.com/" },
+                    { name: "优优教程网神器", desc: "", url: "https://uiiiuiii.com/tools" },
+                    { name: "命名颜色代码", desc: "", url: "https://encycolorpedia.cn/named" },
+                    { name: "色彩百科全书", desc: "", url: "https://www.colorhexa.com/" },
+                    { name: "Pexels", desc: "免费素材图片", url: "https://www.pexels.com/zh-cn/" },
+                    { name: "苹果APP图标下载", desc: "", url: "https://appicons.co/" },
+                    { name: "Emoji表情大全", desc: "", url: "https://www.emojiall.com/zh-hans/all-emojis" },
+                    { name: "Emoji表情百科", desc: "", url: "https://emojipedia.org/zh" },
+                    { name: "VELeap可商用素材", desc: "", url: "https://veleap.com/console/works/material/nav" },
+                    { name: "MikuTools", desc: "轻量工具集", url: "https://tools.miku.ac" },
+                    { name: "标志情报局", desc: "全球LOGO新闻和品牌设计趋势平台", url: "https://www.logonews.cn" },
+                    { name: "免费矢量图标", desc: "", url: "https://igoutu.cn/" },
+                    { name: "爱给网", desc: "音效配乐 视频素材", url: "https://www.aigei.com" },
+                    { name: "蛙蛙工具", desc: "在线工具集", url: "https://www.iamwawa.cn/" },
+                    { name: "奇迹秀工具箱", desc: "设计师的百宝箱", url: "https://qijishow.com/down/index.html" },
+                    { name: "EasyResizer", desc: "轻松批量调整图片尺寸", url: "https://easyresizer.com/zh-cn" },
+                    { name: "ShotKi", desc: "快捷键记录生成图片", url: "https://shotki.app/" },
+                    { name: "IconBrew", desc: "海量SVG图标库", url: "https://iconbrew.com" },
+                    { name: "3Dicons", desc: "3D图标资源", url: "https://3dicons.co/" },
+                    { name: "0v0.ai", desc: "在线图片高清放大背景抠图", url: "https://0v0.ai/rmbg/" },
+                    { name: "设备样机模型外壳截图", desc: "", url: "https://mockup.photos/" },
+                    { name: "Videezy", desc: "免费高清视频素材", url: "https://www.videezy.com/" },
+                    { name: "淘声网", desc: "音乐音效声音搜索引擎", url: "https://www.tosound.com" },
+                    { name: "图片转excel", desc: "", url: "https://toexcel.zhiyakeji.com/" },
+                    { name: "zeoseven", desc: "免费商用字体CDN", url: "https://fonts.zeoseven.com/" }
+                ]
+            }
+        ];
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainContent = document.getElementById('mainContent');
+            const navCategory = document.getElementById('navCategory');
+            const navContainer = document.getElementById('navContainer');
+            const topArrow = document.getElementById('topArrow');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            
+            // 生成分类导航
+            categories.forEach(category => {
+                // 创建导航按钮
+                const button = document.createElement('button');
+                button.className = 'category-btn';
+                button.textContent = category.name;
+                button.setAttribute('data-target', category.id);
+                navCategory.appendChild(button);
+                
+                // 创建分类区域
+                const section = document.createElement('section');
+                section.className = 'category-section';
+                section.id = category.id;
+                
+                // 分类标题
+                const title = document.createElement('h2');
+                title.className = 'category-title';
+                title.innerHTML = `
+                    <div class="category-icon">
+                        <i class="${category.icon}"></i>
+                    </div>
+                    ${category.name}
+                `;
+                section.appendChild(title);
+                
+                // 网站网格
+                const grid = document.createElement('div');
+                grid.className = 'sites-grid';
+                
+                // 添加网站卡片
+                category.sites.forEach(site => {
+                    const card = document.createElement('div');
+                    card.className = 'site-card';
+                    
+                    const link = document.createElement('a');
+                    link.className = 'site-link';
+                    link.href = site.url;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    
+                    link.innerHTML = `
+                        <h3 class="site-name-card">${site.name}</h3>
+                        <p class="site-desc">${site.desc}</p>
+                    `;
+                    
+                    card.appendChild(link);
+                    grid.appendChild(card);
+                });
+                
+                section.appendChild(grid);
+                mainContent.appendChild(section);
+            });
+            
+            // 默认激活第一个分类
+            if (categories.length > 0) {
+                const firstButton = document.querySelector('.category-btn');
+                if (firstButton) {
+                    firstButton.classList.add('active');
+                }
+            }
+            
+            // 导航按钮点击事件
+            document.querySelectorAll('.category-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        // 更新激活状态
+                        document.querySelectorAll('.category-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                        
+                        // 平滑滚动到目标区域
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        // 手机端：点击后关闭导航栏
+                        if (window.innerWidth <= 768 && mobileMenuBtn) {
+                            navContainer.classList.remove('mobile-open');
+                            mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+                        }
+                    }
+                });
+            });
+            
+            // 向上箭头按钮点击事件
+            topArrow.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // 手机端菜单按钮点击事件
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navContainer.classList.toggle('mobile-open');
+                    
+                    // 切换图标
+                    const icon = this.querySelector('i');
+                    if (navContainer.classList.contains('mobile-open')) {
+                        icon.className = 'fas fa-times';
+                    } else {
+                        icon.className = 'fas fa-bars';
+                    }
+                });
+            }
+            
+            // 监听滚动，更新导航激活状态和浮动效果
+            window.addEventListener('scroll', function() {
+                // 添加滚动时的浮动效果
+                if (window.scrollY > 50) {
+                    navContainer.classList.add('nav-scrolled');
+                } else {
+                    navContainer.classList.remove('nav-scrolled');
+                }
+                
+                // 显示/隐藏向上箭头
+                if (window.scrollY > 500) {
+                    topArrow.classList.add('show');
+                } else {
+                    topArrow.classList.remove('show');
+                }
+                
+                // 更新激活的分类
+                const scrollPosition = window.scrollY + 150;
+                let currentSectionId = '';
+                
+                document.querySelectorAll('.category-section').forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSectionId = section.id;
+                    }
+                });
+                
+                // 更新导航按钮激活状态
+                if (currentSectionId) {
+                    document.querySelectorAll('.category-btn').forEach(btn => {
+                        if (btn.getAttribute('data-target') === currentSectionId) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                }
+            });
+            
+            // 为所有外部链接添加target="_blank"
+            document.querySelectorAll('.site-link').forEach(link => {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer');
+            });
+            
+            // 点击页面其他区域关闭导航栏（手机端）
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 768 && 
+                    navContainer && 
+                    mobileMenuBtn &&
+                    !navContainer.contains(event.target) && 
+                    !mobileMenuBtn.contains(event.target) &&
+                    navContainer.classList.contains('mobile-open')) {
+                    navContainer.classList.remove('mobile-open');
+                    mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+            
+            // 窗口大小改变时重置导航状态
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768 && navContainer) {
+                    // 桌面端：确保导航栏展开
+                    navContainer.classList.remove('mobile-open');
+                    navContainer.style.maxHeight = '';
+                    if (mobileMenuBtn) {
+                        mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+                    }
+                }
+            });
+            
+            // 初始检查向上箭头状态
+            setTimeout(() => {
+                if (window.scrollY > 500) {
+                    topArrow.classList.add('show');
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
