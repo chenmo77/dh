@@ -497,61 +497,52 @@
         // 导航数据
         const categories = [
             {
-                id: "system",
-                name: "系统",
-                icon: "fas fa-download",
+                id: "tools",
+                name: "工具",
+                icon: "fas fa-cogs",
                 sites: [
                     { name: "MSDN-山己几子木", desc: "原版系统下载", url: "https://msdn.sjjzm.com/win11.html" },
                     { name: "HelloWindows", desc: "原版系统下载", url: "https://hellowindows.cn" },
                     { name: "ITELLYOU", desc: "原版系统下载", url: "https://next.itellyou.cn" },
                     { name: "又要重装", desc: "原版系统下载", url: "https://www.yyczxt.com/original.html" },
                     { name: "MAS", desc: "原版系统下载", url: "https://massgrave.dev/genuine-installation-media" },
-                    { name: "LTSC原版", desc: "MAS 集合", url: "https://massgrave.dev/windows_ltsc_links" },
-                    { name: "LTSC原版", desc: "莫老师Win11 2024 x64夸克盘", url: "https://pan.quark.cn/s/5466e6f1d59b" },
-                    { name: "LTSC优化版", desc: "果核Win11 26100.2033百度ghxi", url: "https://pan.baidu.com/s/17Z_awcv1Hy89EEvxaSyzdQ" },
-                    { name: "Win10精简版", desc: "果核123盘", url: "https://www.123pan.com/s/HQeA-w71Sh" },
-                    { name: "内部版本：UUP dump", desc: "", url: "https://uupdump.net/" },
-                    { name: "一行命令永久激活", desc: "MAS官网", url: "https://massgrave.dev" },
-                    { name: "一行命令永久激活", desc: "MAS GitHub🚀", url: "https://github.com/massgravel/Microsoft-Activation-Scripts" },
-                    { name: "HEU KMS Activator", desc: "GitHub zbezj大神🚀", url: "https://github.com/zbezj/HEU_KMS_Activator" },
-                    { name: "HEU KMS Activator", desc: "果核分流", url: "https://www.ghxi.com/heukmsactivator.html" }
-                ]
-            },
-            {
-                id: "tools",
-                name: "工具",
-                icon: "fas fa-cogs",
-                sites: [
+                    { name: "MAS LTSC原版", desc: "", url: "https://massgrave.dev/windows_ltsc_links" },
+                    { name: "莫老师 LTSC原版", desc: "Win11 2024 x64夸克盘", url: "https://pan.quark.cn/s/5466e6f1d59b" },
+                    { name: "果核 LTSC优化版", desc: "Win11 26100.2033 百度ghxi", url: "https://pan.baidu.com/s/17Z_awcv1Hy89EEvxaSyzdQ" },
+                    { name: "果核 Win10精简版", desc: "123盘", url: "https://www.123pan.com/s/HQeA-w71Sh" },
+                    { name: "UUP dump 内部版本", desc: "", url: "https://uupdump.net/" },
+                    { name: "Apple X 苹果驱动", desc: "Mac 系统 Boot Camp 驱动", url: "https://www.applex.net/pages/bootcamp" },
+                    { name: "MAS 一行命令永久激活", desc: "官网", url: "https://massgrave.dev" },
+                    { name: "MAS 一行命令永久激活", desc: "GitHub🚀", url: "https://github.com/massgravel/Microsoft-Activation-Scripts" },
+                    { name: "HEU KMS Activator", desc: "一键激活 GitHub zbezj大神🚀", url: "https://github.com/zbezj/HEU_KMS_Activator" },
+                    { name: "HEU KMS Activator", desc: "一键激活 果核分流", url: "https://www.ghxi.com/heukmsactivator.html" },
                     { name: "微PE", desc: "系统安装工具", url: "https://www.wepe.com.cn" },
                     { name: "CMDPE", desc: "系统安装工具", url: "https://www.cmdpe.com" },
                     { name: "intel英特尔", desc: "英特尔官方驱动程序和软件", url: "https://www.intel.cn/content/www/cn/zh/download-center/home.html" },
                     { name: "IObit Driver Booster Pro", desc: "中文破解版驱动更新软件 蓝奏8f3n", url: "https://macace.lanzouj.com/b0131o8sb" },
-                    { name: "苹果Boot Camp驱动", desc: "苹果系统驱动", url: "https://www.applex.net/pages/bootcamp" },
-                    { name: "禁止Win更新工具", desc: "Windows update blocker", url: "https://www.sordum.org/9470/windows-update-blocker-v1-8/" },
-                    { name: "卸载、清除垃圾工具", desc: "HiBit Uninstaller", url: "https://hibitsoft.ir/Uninstaller.html" },
+                    { name: "Windows update blocker", desc: "禁止Win更新工具", url: "https://www.sordum.org/9470/windows-update-blocker-v1-8/" },
+                    { name: "HiBit Uninstaller", desc: "卸载、清除垃圾工具", url: "https://hibitsoft.ir/Uninstaller.html" },
                     { name: "图吧工具箱", desc: "EXE安装版 夸克盘", url: "https://pan.quark.cn/s/eb2796f859c0" },
-                    { name: "硬件检测工具", desc: "423down集合 蓝奏盘", url: "https://423down.lanzouo.com/b0f1dp0mh" },
-                    { name: "开始菜单增强工具", desc: "蓝奏盘提取码 49kx", url: "https://macace.lanzouj.com/b0135gkja" },
-                    { name: "Windows界面自定义工具", desc: "Windhawk官网", url: "https://windhawk.net" },
-                    { name: "必装工具包：阿刚同学", desc: "蓝奏盘提取码 eh86", url: "https://isharepc.lanzoul.com/b030pe1f4j" },
-                    { name: "传输工具：LocalSend", desc: "局域网神器", url: "https://localsend.org" },
-                    { name: "云鸽", desc: "文件传输助手网页版", url: "https://yunge.in/" },
-                    { name: "杀毒工具：火绒安全", desc: "安全软件", url: "https://www.huorong.cn" },
-                    { name: "下载工具：IDM中文破解版", desc: "Internet Download Manager", url: "https://www.cmdpe.com/post/53.html" },
+                    { name: "硬件检测工具包", desc: "423down集合 蓝奏盘", url: "https://423down.lanzouo.com/b0f1dp0mh" },
+                    { name: "StartAllBack", desc: "开始菜单增强 蓝奏盘提取码 49kx", url: "https://macace.lanzouj.com/b0135gkja" },
+                    { name: "Windhawk", desc: "Windows界面自定义", url: "https://windhawk.net" },
+                    { name: "阿刚同学", desc: "必装工具包 蓝奏盘提取码 eh86", url: "https://isharepc.lanzoul.com/b030pe1f4j" },
+                    { name: "LocalSend", desc: "局域网传输神器", url: "https://localsend.org" },
+                    { name: "火绒安全", desc: "杀毒安全软件", url: "https://www.huorong.cn" },
+                    { name: "IDM中文破解版", desc: "下载神器 Internet Download Manager", url: "https://www.cmdpe.com/post/53.html" },
                     { name: "高精度IP地址归属地查询", desc: "全球小鸡监控平台", url: "https://ping0.cc/" },
                     { name: "快捷键备忘录", desc: "快捷键记录工具", url: "https://hotkeycheatsheet.com/zh" },
                     { name: "Anytxt文档内容搜索", desc: "强大安全的本机离线搜索软件", url: "https://anytxt.net.cn/download.html" },
-                    { name: "WinRAR 7.20_x64 汉化版", desc: "无广告 蓝奏盘密码6666", url: "https://iptvindex.lanzn.com/itS643i11okd" },
-                    { name: "WinRAR及rarreg.key", desc: "rarreg.key享免费注册", url: "https://iptvindex.lanzn.com/iZuAg3i2zdhe" },
-                    { name: "7-Zip 开源免费", desc: "", url: "https://sparanoid.com/lab/7z/" },
-                    { name: "Bandizip Pro 中文破解版", desc: "", url: "https://www.cmdpe.com/post/81.html" },
-                    { name: "梯子工具karing", desc: "", url: "https://karing.app/download/" },
-                    { name: "免费V2Ray列表", desc: "", url: "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt" }
+                    { name: "WinRAR 7.20_x64 汉化版", desc: "压缩神器 无广告 蓝奏盘密码6666", url: "https://iptvindex.lanzn.com/itS643i11okd" },
+                    { name: "WinRAR及rarreg.key", desc: "压缩神器 rarreg.key享免费注册", url: "https://iptvindex.lanzn.com/iZuAg3i2zdhe" },
+                    { name: "7-Zip 开源免费", desc: "开源压缩神器 小巧能干", url: "https://sparanoid.com/lab/7z/" },
+                    { name: "karing", desc: "", url: "https://karing.app/download/" },
+                    { name: "免费配置", desc: "配合karing使用", url: "https://gh-proxy.com/https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt" }
                 ]
             },
             {
                 id: "office",
-                name: "办公",
+                name: "牛马",
                 icon: "fas fa-keyboard",
                 sites: [
                     { name: "WPS - 官网", desc: "", url: "https://www.wps.cn" },
@@ -560,10 +551,19 @@
                     { name: "Office Tool Plus", desc: "Office部署工具", url: "https://otp.landian.vip/zh-cn/" },
                     { name: "C2R Install", desc: "Office安装工具", url: "https://www.ghxi.com/officec2rins.html" },
                     { name: "Office 2016 精简版", desc: "仅200M", url: "https://www.ghxi.com/office4n1.html" },
-                    { name: "微信输入法 - 官网", desc: "微信官方输入法", url: "https://z.weixin.qq.com" },
                     { name: "搜狗输入法", desc: "去广告精简优化版", url: "https://www.cmdpe.com/post/346.html" },
                     { name: "搜狗输入法white皮肤", desc: "", url: "https://pinyin.sogou.com/d/skins/download.php?skin_id=525064&rf=detail" },
-                    { name: "搜狗输入法black皮肤", desc: "", url: "https://pinyin.sogou.com/d/skins/download.php?skin_id=525008&rf=detail" }
+                    { name: "搜狗输入法black皮肤", desc: "", url: "https://pinyin.sogou.com/d/skins/download.php?skin_id=525008&rf=detail" },
+                    { name: "PS 2025", desc: "26.3中文破解版", url: "https://www.shephe.com/resources/adobe-photoshop-free-download/" },
+                    { name: "PS 2022", desc: "23.1.1绿色版", url: "https://www.ghxi.com/ps2022green.html" },
+                    { name: "PS 2020", desc: "21.2绿色精简版", url: "https://www.ghxi.com/ps2020green.html" },
+                    { name: "PS CS5", desc: "绿色精简版", url: "https://www.ghxi.com/pscs5green.html" },
+                    { name: "XnView中文版", desc: "看图软件", url: "https://www.423down.com/4522.html" },
+                    { name: "FastStone Capture", desc: "截图录屏工具", url: "https://www.423down.com/660.html" },
+                    { name: "PotPlayer播放器", desc: "视频播放神器", url: "https://potplayer.daum.net/?lang=zh_CN" },
+                    { name: "剪映 VIP破解版", desc: "视频编辑软件", url: "https://www.ai-hd.com/article/df3a220f-c7f6-4601-9cd7-8bde2b9d5fcd" },
+                    { name: "m3u8-downloader🚀", desc: "视频下载工具", url: "https://github.com/yangwk/m3u8-downloader" },
+                    { name: "完美解码", desc: "多媒文件软硬解播放的影音解码包", url: "https://www.wmzhe.com/soft-13163.html#download_group" }
                 ]
             },
             {
@@ -582,25 +582,33 @@
                     { name: "种子音乐", desc: "热门歌曲免费在线听", url: "https://zz123.com/" },
                     { name: "清风DJ音乐网", desc: "在线免费听DJ歌曲", url: "https://www.vvvdj.com/" },
                     { name: "DJ哟哟音乐网", desc: "高音质DJ舞曲", url: "https://www.djuu.com/" },
-                    { name: "Jellyfin", desc: "The Free Software Media System", url: "https://jellyfin.org" }
-                ]
-            },
-            {
-                id: "image",
-                name: "图形",
-                icon: "fas fa-image",
-                sites: [
-                    { name: "Adobe Photoshop 2025", desc: "26.3中文破解版", url: "https://www.shephe.com/resources/adobe-photoshop-free-download/" },
-                    { name: "Adobe Photoshop 2022", desc: "23.1.1绿色版", url: "https://www.ghxi.com/ps2022green.html" },
-                    { name: "Adobe Photoshop 2020", desc: "21.2绿色精简版", url: "https://www.ghxi.com/ps2020green.html" },
-                    { name: "Adobe Photoshop CS5", desc: "绿色精简版", url: "https://www.ghxi.com/pscs5green.html" },
-                    { name: "XnView中文版", desc: "看图软件", url: "https://www.423down.com/4522.html" },
-                    { name: "FastStone Capture", desc: "截图录屏工具", url: "https://www.423down.com/660.html" },
-                    { name: "美图秀秀", desc: "去广告纯净版", url: "https://www.ddooo.com/softdown/203035.htm" },
-                    { name: "PotPlayer", desc: "视频播放 官网", url: "https://potplayer.daum.net/?lang=zh_CN" },
-                    { name: "剪映 VIP破解版", desc: "视频编辑软件", url: "https://www.ai-hd.com/article/df3a220f-c7f6-4601-9cd7-8bde2b9d5fcd" },
-                    { name: "m3u8-downloader🚀", desc: "视频下载工具", url: "https://github.com/yangwk/m3u8-downloader" },
-                    { name: "完美解码", desc: "多媒文件软硬解播放的影音解码包", url: "https://www.wmzhe.com/soft-13163.html#download_group" }
+                    { name: "Jellyfin", desc: "The Free Software Media System", url: "https://jellyfin.org" },
+                    { name: "WallHere", desc: "壁纸库", url: "https://wallhere.com/" },
+                    { name: "彼岸桌面", desc: "高清壁纸", url: "https://www.netbian.com" },
+                    { name: "墨鱼部落格", desc: "高清壁纸", url: "https://www.moyublog.com/freewallpapers/" },
+                    { name: "bcoderss", desc: "全面屏手机壁纸", url: "https://m.bcoderss.com/" },
+                    { name: "Random Wallpapers随机壁纸", desc: "", url: "https://hdqwalls.com/random-wallpapers" },
+                    { name: "haikei壁纸生成器", desc: "", url: "https://app.haikei.app/" },
+                    { name: "日式JK风格壁纸", desc: "", url: "https://www.jk.rs/" },
+                    { name: "SnapAny", desc: "万能视频图片解析下载", url: "https://snapany.com/zh" },
+                    { name: "DataTool", desc: "在线视频下载器", url: "https://www.datatool.vip/" },
+                    { name: "小天在线工具", desc: "全网热门视频下载器", url: "https://www.xtdowner.com/video/" },
+                    { name: "cobalt", desc: "视频下载工具集合", url: "https://cobalt.tools/" },
+                    { name: "天天短剧库", desc: "短剧网盘下载", url: "https://www.kdocs.cn/l/cqRbhqazOZHP?R=L1MvMQ%3D%3D" },
+                    { name: "英语台词社", desc: "英语影视台词", url: "https://www.taicishe.com/" },
+                    { name: "Spotify 音乐下载", desc: "", url: "https://spotdownloader.com/" },
+                    { name: "77铃声网", desc: "免费手机铃声下载", url: "https://www.77ring.com/" },
+                    { name: "Ringer", desc: "在线制作手机铃声", url: "https://ringer.org/zh/" },
+                    { name: "海洋听书网", desc: "有声小说", url: "http://www.ychy.org/" },
+                    { name: "SaltyLeo的书架", desc: "电子书资源", url: "https://book.tstrs.me/search" },
+                    { name: "小学生作文网", desc: "作文资源", url: "https://www.ppzuowen.com/" },
+                    { name: "八零电子书", desc: "小说免费下载", url: "https://txt80.cc/" },
+                    { name: "MUSICBED", desc: "版权音乐", url: "https://www.musicbed.com" },
+                    { name: "PremiumBeat", desc: "版权音乐", url: "https://www.premiumbeat.com/zh/" },
+                    { name: "Audiojungle", desc: "版权音乐", url: "https://elements.envato.com/" },
+                    { name: "POND5", desc: "版权音乐", url: "https://www.pond5.com" },
+                    { name: "Audio Library", desc: "版权音乐", url: "https://www.audiolibrary.com.co/" },
+                    { name: "Epidemic Sound", desc: "版权音乐", url: "https://www.epidemicsound.com/" }
                 ]
             },
             {
@@ -619,21 +627,11 @@
                     { name: "莫老师的附件表", desc: "", url: "https://www.zxmls.lol/" },
                     { name: "软件SOS 玩机手册", desc: "", url: "http://www.rjsos.com/" },
                     { name: "易破解 亿破姐", desc: "", url: "https://www.ypojie.com" },
-                    { name: "个人笔记", desc: "", url: "https://www.8uid.com/" }
-                ]
-            },
-            {
-                id: "wallpaper",
-                name: "壁纸",
-                icon: "fas fa-image",
-                sites: [
-                    { name: "WallHere 壁纸库", desc: "", url: "https://wallhere.com/" },
-                    { name: "彼岸桌面", desc: "", url: "https://www.netbian.com" },
-                    { name: "墨鱼部落格", desc: "", url: "https://www.moyublog.com/freewallpapers/" },
-                    { name: "全面屏手机壁纸", desc: "", url: "https://m.bcoderss.com/" },
-                    { name: "Random Wallpapers随机壁纸", desc: "", url: "https://hdqwalls.com/random-wallpapers" },
-                    { name: "壁纸生成器", desc: "", url: "https://app.haikei.app/" },
-                    { name: "日式JK风格壁纸", desc: "", url: "https://www.jk.rs/" }
+                    { name: "个人笔记", desc: "", url: "https://www.8uid.com/" },
+                    { name: "果核导航", desc: "收藏好网址", url: "https://dh.ghxi.com/" },
+                    { name: "喜欢书签", desc: "找网站更简单", url: "https://www.likebookmark.com/" },
+                    { name: "考拉新媒体", desc: "新媒体工具", url: "https://www.kaolamedia.com/" },
+                    { name: "简视频", desc: "视频创作导航", url: "https://www.aewz.com/" }
                 ]
             },
             {
@@ -683,43 +681,6 @@
                     { name: "有用经验", desc: "生活经验分享", url: "https://yyjingyan.com/" },
                     { name: "最佳平替", desc: "开心就好", url: "https://pingti.app/" },
                     { name: "神奇的视觉差", desc: "视觉差效果展示", url: "https://optical.toys/" }
-                ]
-            },
-            {
-                id: "resources",
-                name: "资源",
-                icon: "fas fa-film",
-                sites: [
-                    { name: "SnapAny", desc: "万能视频图片解析下载", url: "https://snapany.com/zh" },
-                    { name: "DataTool", desc: "在线视频下载器", url: "https://www.datatool.vip/" },
-                    { name: "小天在线工具", desc: "全网热门视频下载器", url: "https://www.xtdowner.com/video/" },
-                    { name: "cobalt", desc: "视频下载工具集合", url: "https://cobalt.tools/" },
-                    { name: "天天短剧库", desc: "短剧网盘下载", url: "https://www.kdocs.cn/l/cqRbhqazOZHP?R=L1MvMQ%3D%3D" },
-                    { name: "英语台词社", desc: "英语影视台词", url: "https://www.taicishe.com/" },
-                    { name: "Spotify 音乐下载", desc: "", url: "https://spotdownloader.com/" },
-                    { name: "77铃声网", desc: "免费手机铃声下载", url: "https://www.77ring.com/" },
-                    { name: "Ringer", desc: "在线制作手机铃声", url: "https://ringer.org/zh/" },
-                    { name: "海洋听书网", desc: "有声小说", url: "http://www.ychy.org/" },
-                    { name: "SaltyLeo的书架", desc: "电子书资源", url: "https://book.tstrs.me/search" },
-                    { name: "小学生作文网", desc: "作文资源", url: "https://www.ppzuowen.com/" },
-                    { name: "八零电子书", desc: "小说免费下载", url: "https://txt80.cc/" },
-                    { name: "MUSICBED", desc: "版权音乐", url: "https://www.musicbed.com" },
-                    { name: "PremiumBeat", desc: "版权音乐", url: "https://www.premiumbeat.com/zh/" },
-                    { name: "Audiojungle", desc: "版权音乐", url: "https://elements.envato.com/" },
-                    { name: "POND5", desc: "版权音乐", url: "https://www.pond5.com" },
-                    { name: "Audio Library", desc: "版权音乐", url: "https://www.audiolibrary.com.co/" },
-                    { name: "Epidemic Sound", desc: "版权音乐", url: "https://www.epidemicsound.com/" }
-                ]
-            },
-            {
-                id: "navigation",
-                name: "导航",
-                icon: "fas fa-compass",
-                sites: [
-                    { name: "果核导航", desc: "收藏好网址", url: "https://dh.ghxi.com/" },
-                    { name: "喜欢书签", desc: "找网站更简单", url: "https://www.likebookmark.com/" },
-                    { name: "考拉新媒体", desc: "新媒体工具", url: "https://www.kaolamedia.com/" },
-                    { name: "简视频", desc: "视频创作导航", url: "https://www.aewz.com/" }
                 ]
             },
             {
