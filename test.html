@@ -44,10 +44,7 @@
       transition: opacity 0.3s ease;
     }
     .boot-logo {
-      font-size: 48px;
       margin-bottom: 20px;
-      color: #c0c0c0;
-      text-shadow: 2px 2px 0 #808080;
     }
     .boot-text {
       font-size: 24px;
@@ -334,24 +331,20 @@
       position: relative;
     }
 
-    /* 开始按钮 - 修复Windows徽标显示 */
+    /* 开始按钮 - CSS绘制Windows旗帜 */
     .start-button {
       background: #c0c0c0;
       border-top: 2px solid #ffffff;
       border-left: 2px solid #ffffff;
       border-right: 2px solid #404040;
       border-bottom: 2px solid #404040;
-      padding: 6px 16px 6px 10px;
+      padding: 4px 16px 4px 8px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-weight: bold;
-      font-size: 13px;
       cursor: default;
       position: relative;
       z-index: 100;
       height: 32px;
-      line-height: 1;
     }
     .start-button:active {
       border-top: 2px solid #404040;
@@ -359,8 +352,10 @@
       border-right: 2px solid #ffffff;
       border-bottom: 2px solid #ffffff;
     }
-    .start-button span:last-child {
-      line-height: 1;
+    .start-button-content {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     /* 开始菜单弹出层 */
@@ -368,13 +363,13 @@
       position: absolute;
       bottom: 40px;
       left: 12px;
-      width: 250px;
+      width: 200px;
       background: #c0c0c0;
       border-top: 2px solid #ffffff;
       border-left: 2px solid #ffffff;
       border-right: 2px solid #404040;
       border-bottom: 2px solid #404040;
-      padding: 6px 0;
+      padding: 4px 0;
       box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
       z-index: 1000;
       display: none;
@@ -383,36 +378,62 @@
       display: block;
     }
     .start-menu-header {
-      padding: 10px 12px;
+      padding: 8px 12px;
       background: #000080;
       color: white;
       font-weight: bold;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
     .start-menu-item {
-      padding: 8px 16px;
+      padding: 6px 12px;
       display: flex;
       align-items: center;
       gap: 12px;
       cursor: default;
-      border: 1px solid transparent;
+      position: relative;
     }
     .start-menu-item:hover {
       background: #000080;
       color: white;
-      border-top: 1px solid #ffffff;
-      border-left: 1px solid #ffffff;
-      border-right: 1px solid #404040;
-      border-bottom: 1px solid #404040;
     }
     .start-menu-divider {
       height: 2px;
       background: #808080;
-      margin: 6px 0;
+      margin: 4px 0;
       border-top: 1px solid #dfdfdf;
+    }
+
+    /* 二级菜单 (向右展开) */
+    .submenu {
+      position: absolute;
+      left: 100%;
+      top: -2px;
+      width: 180px;
+      background: #c0c0c0;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #404040;
+      border-bottom: 2px solid #404040;
+      padding: 4px 0;
+      display: none;
+      z-index: 1001;
+    }
+    .start-menu-item:hover .submenu {
+      display: block;
+    }
+    .submenu-item {
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: default;
+    }
+    .submenu-item:hover {
+      background: #000080;
+      color: white;
     }
 
     /* 文件夹导航区 (六个文件夹) */
@@ -475,18 +496,23 @@
       border-bottom: 2px solid #c0c0c0;
       padding-bottom: 4px;
     }
-
-    /* 为下载链接添加真实URL (隐藏，仅用于点击) */
-    .hidden-url {
-      display: none;
-    }
   </style>
 </head>
 <body>
   <!-- 开机加载动画 -->
   <div id="boot-screen">
-    <div class="boot-logo">🪟 Windows 95</div>
-    <div class="boot-text">HellYell导航 · 让美好发声</div>
+    <div class="boot-logo">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <div style="position: relative; width: 48px; height: 48px;">
+          <div style="position: absolute; top: 4px; left: 0; width: 20px; height: 20px; background: #F25022; border: 2px solid #fff;"></div>
+          <div style="position: absolute; top: 4px; left: 24px; width: 20px; height: 20px; background: #7FBA00; border: 2px solid #fff;"></div>
+          <div style="position: absolute; top: 28px; left: 0; width: 20px; height: 20px; background: #00A4EF; border: 2px solid #fff;"></div>
+          <div style="position: absolute; top: 28px; left: 24px; width: 20px; height: 20px; background: #FFB900; border: 2px solid #fff;"></div>
+        </div>
+        <span style="font-size: 48px; color: #c0c0c0;">HellYell导航</span>
+      </div>
+    </div>
+    <div class="boot-text">正在启动中……</div>
     <div class="boot-progress">
       <div class="boot-progress-bar"></div>
     </div>
@@ -634,38 +660,45 @@
 
     <!-- 底部导航栏 -->
     <div class="bottom-nav">
-      <!-- 开始按钮 (彩色Windows旗帜) -->
+      <!-- 开始按钮 (CSS绘制Windows旗帜) -->
       <div class="start-button" id="startBtn">
-  <div style="display: flex; align-items: center; gap: 4px;">
-    <div style="position: relative; width: 18px; height: 18px;">
-      <!-- 旗帜主体 (四色Windows标志) -->
-      <div style="position: absolute; top: 2px; left: 0; width: 7px; height: 7px; background: #F25022; border: 1px solid #000;"></div>
-      <div style="position: absolute; top: 2px; left: 8px; width: 7px; height: 7px; background: #7FBA00; border: 1px solid #000;"></div>
-      <div style="position: absolute; top: 10px; left: 0; width: 7px; height: 7px; background: #00A4EF; border: 1px solid #000;"></div>
-      <div style="position: absolute; top: 10px; left: 8px; width: 7px; height: 7px; background: #FFB900; border: 1px solid #000;"></div>
-    </div>
-    <span>开始</span>
-  </div>
-</div>
+        <div class="start-button-content">
+          <div style="position: relative; width: 20px; height: 20px;">
+            <div style="position: absolute; top: 2px; left: 0; width: 8px; height: 8px; background: #F25022; border: 1px solid #000;"></div>
+            <div style="position: absolute; top: 2px; left: 9px; width: 8px; height: 8px; background: #7FBA00; border: 1px solid #000;"></div>
+            <div style="position: absolute; top: 11px; left: 0; width: 8px; height: 8px; background: #00A4EF; border: 1px solid #000;"></div>
+            <div style="position: absolute; top: 11px; left: 9px; width: 8px; height: 8px; background: #FFB900; border: 1px solid #000;"></div>
+          </div>
+          <span>开始</span>
+        </div>
+      </div>
       
       <!-- 开始菜单弹出层 -->
       <div class="start-menu" id="startMenu">
         <div class="start-menu-header">
-  <div style="display: flex; align-items: center; gap: 8px;">
-    <div style="position: relative; width: 16px; height: 16px;">
-      <div style="position: absolute; top: 1px; left: 0; width: 6px; height: 6px; background: #F25022; border: 1px solid #000;"></div>
-      <div style="position: absolute; top: 1px; left: 7px; width: 6px; height: 6px; background: #7FBA00; border: 1px solid #000;"></div>
-      <div style="position: absolute; top: 8px; left: 0; width: 6px; height: 6px; background: #00A4EF; border: 1px solid #000;"></div>
-      <div style="position: absolute; top: 8px; left: 7px; width: 6px; height: 6px; background: #FFB900; border: 1px solid #000;"></div>
-    </div>
-    <span>HellYell导航</span>
-  </div>
-</div>
+          <div style="position: relative; width: 18px; height: 18px;">
+            <div style="position: absolute; top: 2px; left: 0; width: 7px; height: 7px; background: #F25022; border: 1px solid #fff;"></div>
+            <div style="position: absolute; top: 2px; left: 8px; width: 7px; height: 7px; background: #7FBA00; border: 1px solid #fff;"></div>
+            <div style="position: absolute; top: 10px; left: 0; width: 7px; height: 7px; background: #00A4EF; border: 1px solid #fff;"></div>
+            <div style="position: absolute; top: 10px; left: 8px; width: 7px; height: 7px; background: #FFB900; border: 1px solid #fff;"></div>
+          </div>
+          <span>HellYell导航</span>
+        </div>
+        
         <div class="start-menu-item">
           <span>📋</span> 关于本导航
-        </div>
-        <div class="start-menu-item">
-          <span>ℹ️</span> 版本 1.0
+          <!-- 二级菜单 - 向右展开 -->
+          <div class="submenu">
+            <div class="submenu-item">
+              <span>📌</span> 版本 1.0
+            </div>
+            <div class="submenu-item">
+              <span>👤</span> 作者: HellYell
+            </div>
+            <div class="submenu-item">
+              <span>📅</span> 2025.03.16
+            </div>
+          </div>
         </div>
         <div class="start-menu-divider"></div>
         <div class="start-menu-item">
@@ -690,7 +723,7 @@
         <div id="tab-interesting" class="folder-item" data-page="interesting"><span>📁</span> 有趣</div>
       </div>
 
-      <!-- 托盘区 - 一行显示 (日期+时间) -->
+      <!-- 托盘区 - 一行显示 -->
       <div class="tray-area" id="trayArea">
         <span id="trayDateTime">2026/3/16 周一 10:19:04</span>
       </div>
@@ -747,28 +780,27 @@
         startMenu.classList.toggle('show');
       });
 
+      // 二级菜单内容已内嵌在HTML中，无需额外JS
+
+      document.addEventListener('click', function(e) {
+        if (!startBtn.contains(e.target) && !startMenu.contains(e.target)) {
+          startMenu.classList.remove('show');
+        }
+      });
+
+      // 关闭开始菜单项
       document.querySelectorAll('.start-menu-item').forEach(item => {
         item.addEventListener('click', function(e) {
           e.stopPropagation();
           const text = this.innerText.trim();
           if (text.includes('关闭开始菜单')) {
             startMenu.classList.remove('show');
-          } else if (text.includes('关于本导航')) {
-            alert('HellYell导航 - 让美好发声\n\nWindows 95 复古风格软件导航站\n收集 Windows 必备软件，装机一条龙');
-          } else if (text.includes('版本 1.0')) {
-            alert('HellYell导航 · 复古版 v1.0\n\n基于 Windows 95 界面复刻\n让美好发声');
           } else if (text.includes('装机必备清单')) {
             alert('系统 → 必装 → 牛马 → 娱乐 → 小众 → 有趣\n\n按顺序装，准没错');
           } else if (text.includes('反馈建议')) {
             alert('欢迎提出建议\n\n让美好发声 · 一起完善这个导航站');
           }
         });
-      });
-
-      document.addEventListener('click', function(e) {
-        if (!startBtn.contains(e.target) && !startMenu.contains(e.target)) {
-          startMenu.classList.remove('show');
-        }
       });
 
       // ========== 托盘日期时间 (一行显示) ==========
