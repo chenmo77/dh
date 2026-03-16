@@ -359,21 +359,6 @@
       border-right: 2px solid #ffffff;
       border-bottom: 2px solid #ffffff;
     }
-    .start-button .win-logo {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      background: #c0c0c0;
-      border-top: 2px solid #ffffff;
-      border-left: 2px solid #ffffff;
-      border-right: 2px solid #808080;
-      border-bottom: 2px solid #808080;
-      font-size: 14px;
-      line-height: 16px;
-      text-align: center;
-      color: #000000;
-      box-shadow: none;
-    }
     .start-button span:last-child {
       line-height: 1;
     }
@@ -406,20 +391,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-    }
-    .start-menu-header .win-logo-small {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      background: #c0c0c0;
-      border-top: 2px solid #ffffff;
-      border-left: 2px solid #ffffff;
-      border-right: 2px solid #808080;
-      border-bottom: 2px solid #808080;
-      font-size: 12px;
-      line-height: 14px;
-      text-align: center;
-      color: #000;
     }
     .start-menu-item {
       padding: 8px 16px;
@@ -663,18 +634,20 @@
 
     <!-- 底部导航栏 -->
     <div class="bottom-nav">
-      <!-- 开始按钮 (修复Windows徽标) -->
-      <div class="start-button" id="startBtn">
-        <span class="win-logo">🪟</span>
-        <span>开始</span>
-      </div>
+      <!-- 开始按钮 (使用图片图标) -->
+<div class="start-button" id="startBtn">
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAAjUlEQVQ4jbXTMQ6CMBQG4BdD4iF0c3DkCE7ewcl4E2/ETbyJG2dzcGTiICQQ2kYs0kIpaXxL+7+PtgWwYyRJoq0tAFNKKaUUE+k9j3meUUrBcRzQWoP3PZxzYIzBPM+QUuK6rps8GIZhE0iSBCEEAEBKCSklAOB9j+u6EoVpmtA0zVcLAK01WmthjNkEwjCE1vqrRZIkJAD4B1wN/34LpO/7P7nWGq7rIkmS3QApJY7j+DtACCGEcBzHLwEhhJAQ4iMghBASQnwEhBBCQoiPQJZlBMCnAgAA//8DAFeOoXKLykIzAAAAAElFTkSuQmCC" 
+       alt="Start" style="width: 18px; height: 18px; image-rendering: pixelated; border: none; margin-right: 4px;">
+  <span>开始</span>
+</div>
       
       <!-- 开始菜单弹出层 -->
       <div class="start-menu" id="startMenu">
         <div class="start-menu-header">
-          <span class="win-logo-small">🪟</span>
-          <span>HellYell导航</span>
-        </div>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAAjUlEQVQ4jbXTMQ6CMBQG4BdD4iF0c3DkCE7ewcl4E2/ETbyJG2dzcGTiICQQ2kYs0kIpaXxL+7+PtgWwYyRJoq0tAFNKKaUUE+k9j3meUUrBcRzQWoP3PZxzYIzBPM+QUuK6rps8GIZhE0iSBCEEAEBKCSklAOB9j+u6EoVpmtA0zVcLAK01WmthjNkEwjCE1vqrRZIkJAD4B1wN/34LpO/7P7nWGq7rIkmS3QApJY7j+DtACCGEcBzHLwEhhJAQ4iMghBASQnwEhBBCQoiPQJZlBMCnAgAA//8DAFeOoXKLykIzAAAAAElFTkSuQmCC" 
+       alt="Start" style="width: 16px; height: 16px; image-rendering: pixelated; border: none; margin-right: 4px;">
+        <span>HellYell导航</span>
+      </div>
         <div class="start-menu-item">
           <span>📋</span> 关于本导航
         </div>
