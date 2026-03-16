@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HellYell导航-让美好发声</title>
+  <title>HellYell导航 - 让美好发声</title>
   <style>
     /* 全局复位 + 像素风格 */
     * {
@@ -226,7 +226,7 @@
       padding: 4px 12px;
       font-size: 11px;
       font-weight: bold;
-      cursor: default;
+      cursor: pointer;
       text-decoration: none;
       color: black;
       display: inline-block;
@@ -241,7 +241,7 @@
       background: #d0d0d0;
     }
 
-    /* ===== 有趣页面专用样式 (四列布局，无按钮，整块可点) ===== */
+    /* ===== 有趣页面专用样式 (图标左，名称上，简介下) ===== */
     .links-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -256,16 +256,14 @@
       border-left-color: #ffffff;
       border-right-color: #808080;
       border-bottom-color: #808080;
-      padding: 16px 8px;
+      padding: 12px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 10px;
+      gap: 12px;
       cursor: pointer;
       transition: background 0.1s;
       text-decoration: none;
       color: inherit;
+      min-height: 80px;
     }
     .link-card:hover {
       background: #e0f0ff;
@@ -286,7 +284,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      flex-shrink: 0;
     }
     .link-icon img {
       width: 32px;
@@ -294,15 +292,30 @@
       image-rendering: pixelated;
     }
 
+    .link-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      overflow: hidden;
+    }
     .link-name {
       font-weight: bold;
       font-size: 13px;
       color: #000080;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .link-desc {
       font-size: 11px;
       color: #404040;
-      line-height: 1.4;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     /* ========== 底部导航栏 ========== */
@@ -321,7 +334,7 @@
       position: relative;
     }
 
-    /* 开始按钮 */
+    /* 开始按钮 - 修复Windows徽标显示 */
     .start-button {
       background: #c0c0c0;
       border-top: 2px solid #ffffff;
@@ -331,12 +344,14 @@
       padding: 6px 16px 6px 10px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-weight: bold;
       font-size: 13px;
       cursor: default;
       position: relative;
       z-index: 100;
+      height: 32px;
+      line-height: 1;
     }
     .start-button:active {
       border-top: 2px solid #404040;
@@ -344,15 +359,29 @@
       border-right: 2px solid #ffffff;
       border-bottom: 2px solid #ffffff;
     }
-    .start-button span:first-child {
-      font-size: 18px;
+    .start-button .win-logo {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      background: #c0c0c0;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #808080;
+      border-bottom: 2px solid #808080;
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+      color: #000000;
+      box-shadow: none;
+    }
+    .start-button span:last-child {
       line-height: 1;
     }
 
     /* 开始菜单弹出层 */
     .start-menu {
       position: absolute;
-      bottom: 55px;
+      bottom: 40px;
       left: 12px;
       width: 250px;
       background: #c0c0c0;
@@ -377,6 +406,20 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+    .start-menu-header .win-logo-small {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: #c0c0c0;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #808080;
+      border-bottom: 2px solid #808080;
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      color: #000;
     }
     .start-menu-item {
       padding: 8px 16px;
@@ -430,7 +473,7 @@
       background: #b0b0b0;
     }
 
-    /* 托盘区 - 两行显示 */
+    /* 托盘区 - 一行显示 */
     .tray-area {
       background: #c0c0c0;
       border-top: 2px solid #404040;
@@ -441,18 +484,8 @@
       font-size: 11px;
       font-weight: bold;
       white-space: nowrap;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      line-height: 1.4;
-      min-width: 120px;
-    }
-    .tray-time {
-      font-size: 12px;
-    }
-    .tray-date {
-      font-size: 10px;
-      color: #2f4f4f;
+      min-width: 180px;
+      text-align: right;
     }
 
     /* 分类页面切换 */
@@ -471,13 +504,18 @@
       border-bottom: 2px solid #c0c0c0;
       padding-bottom: 4px;
     }
+
+    /* 为下载链接添加真实URL (隐藏，仅用于点击) */
+    .hidden-url {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <!-- 开机加载动画 -->
   <div id="boot-screen">
-    <div class="boot-logo">🪟 HellYell 导航</div>
-    <div class="boot-text">正在启动...</div>
+    <div class="boot-logo">🪟 Windows 95</div>
+    <div class="boot-text">HellYell导航 · 让美好发声</div>
     <div class="boot-progress">
       <div class="boot-progress-bar"></div>
     </div>
@@ -504,24 +542,24 @@
       <div id="page-system" class="category-page active-page">
         <div class="page-header">📂 系统 (安装·激活·驱动·卸载)</div>
         <div class="software-grid">
-          <div class="soft-card"><div class="icon32">🖥️</div><div class="card-info"><span class="card-name">Windows 11 23H2</span><span class="card-desc">官方镜像 + 最新更新</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Windows 11')">下载</a></div>
-          <div class="soft-card"><div class="icon32">💿</div><div class="card-info"><span class="card-name">Ventoy 1.0.99</span><span class="card-desc">多系统启动盘，拖拽即用</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Ventoy')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🔧</div><div class="card-info"><span class="card-name">HWIDGen 2025.02</span><span class="card-desc">数字激活，永久</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：HWIDGen')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🛡️</div><div class="card-info"><span class="card-name">Windows Update Blocker</span><span class="card-desc">一键屏蔽系统更新</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：更新屏蔽器')">下载</a></div>
-          <div class="soft-card"><div class="icon32">⚙️</div><div class="card-info"><span class="card-name">Snappy Driver</span><span class="card-desc">离线驱动包合集</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：SDI')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🗑️</div><div class="card-info"><span class="card-name">Geek Uninstaller</span><span class="card-desc">强力卸载，清理残留</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Geek')">下载</a></div>
+          <div class="soft-card"><div class="icon32">🖥️</div><div class="card-info"><span class="card-name">Windows 11 23H2</span><span class="card-desc">官方镜像 + 最新更新</span></div><a href="https://www.microsoft.com/software-download/windows11" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">💿</div><div class="card-info"><span class="card-name">Ventoy 1.0.99</span><span class="card-desc">多系统启动盘，拖拽即用</span></div><a href="https://github.com/ventoy/Ventoy/releases" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🔧</div><div class="card-info"><span class="card-name">HWIDGen 2025.02</span><span class="card-desc">数字激活，永久</span></div><a href="https://github.com/massgravel/Microsoft-Activation-Scripts" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🛡️</div><div class="card-info"><span class="card-name">Windows Update Blocker</span><span class="card-desc">一键屏蔽系统更新</span></div><a href="https://www.sordum.org/9470/windows-update-blocker/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">⚙️</div><div class="card-info"><span class="card-name">Snappy Driver</span><span class="card-desc">离线驱动包合集</span></div><a href="https://sdi-tool.org/download/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🗑️</div><div class="card-info"><span class="card-name">Geek Uninstaller</span><span class="card-desc">强力卸载，清理残留</span></div><a href="https://geekuninstaller.com/download" class="download-link" target="_blank">下载</a></div>
         </div>
       </div>
 
       <!-- ===== 必装页面 (一行两个) ===== -->
       <div id="page-must" class="category-page">
-        <div class="page-header">📂 必装 (输入·压缩·浏览·安全·下载)</div>
+        <div class="page-header">📂 必装 (输入法·压缩·浏览器·安全·下载)</div>
         <div class="software-grid">
-          <div class="soft-card"><div class="icon32">⌨️</div><div class="card-info"><span class="card-name">搜狗输入法 去广告版</span><span class="card-desc">纯净无弹窗，词库强大</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：搜狗输入法')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🗜️</div><div class="card-info"><span class="card-name">WinRAR 去广告版</span><span class="card-desc">经典压缩，右键习惯</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：WinRAR')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🌐</div><div class="card-info"><span class="card-name">Chrome 122</span><span class="card-desc">插件丰富，同步方便</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Chrome')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🛡️</div><div class="card-info"><span class="card-name">火绒安全 5.0</span><span class="card-desc">轻量安静，无广告</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：火绒')">下载</a></div>
-          <div class="soft-card"><div class="icon32">⬇️</div><div class="card-info"><span class="card-name">Internet Download Manager</span><span class="card-desc">下载神器，多线程</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：IDM')">下载</a></div>
+          <div class="soft-card"><div class="icon32">⌨️</div><div class="card-info"><span class="card-name">搜狗输入法 去广告版</span><span class="card-desc">纯净无弹窗，词库强大</span></div><a href="https://pinyin.sogou.com/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🗜️</div><div class="card-info"><span class="card-name">WinRAR 去广告版</span><span class="card-desc">经典压缩，右键习惯</span></div><a href="https://www.win-rar.com/download.html" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🌐</div><div class="card-info"><span class="card-name">Chrome 122</span><span class="card-desc">插件丰富，同步方便</span></div><a href="https://www.google.com/chrome/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🛡️</div><div class="card-info"><span class="card-name">火绒安全 5.0</span><span class="card-desc">轻量安静，无广告</span></div><a href="https://www.huorong.cn/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">⬇️</div><div class="card-info"><span class="card-name">Internet Download Manager</span><span class="card-desc">下载神器，多线程</span></div><a href="https://www.internetdownloadmanager.com/download.html" class="download-link" target="_blank">下载</a></div>
         </div>
       </div>
 
@@ -529,11 +567,11 @@
       <div id="page-work" class="category-page">
         <div class="page-header">📂 牛马 (办公·设计·剪辑·笔记)</div>
         <div class="software-grid">
-          <div class="soft-card"><div class="icon32">📄</div><div class="card-info"><span class="card-name">Office 2021 Pro Plus</span><span class="card-desc">经典版，含Word/Excel/PPT</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Office 2021')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🎨</div><div class="card-info"><span class="card-name">Photoshop 2024</span><span class="card-desc">设计必备，修图神器</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Photoshop')">下载</a></div>
-          <div class="soft-card"><div class="icon32">✂️</div><div class="card-info"><span class="card-name">剪映专业版</span><span class="card-desc">简单易用，国产剪辑</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：剪映')">下载</a></div>
-          <div class="soft-card"><div class="icon32">📝</div><div class="card-info"><span class="card-name">Obsidian 1.5</span><span class="card-desc">双链笔记，本地存储</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Obsidian')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🧠</div><div class="card-info"><span class="card-name">Xmind 2024</span><span class="card-desc">思维导图，脑图工具</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Xmind')">下载</a></div>
+          <div class="soft-card"><div class="icon32">📄</div><div class="card-info"><span class="card-name">Office 2021 Pro Plus</span><span class="card-desc">经典版，含Word/Excel/PPT</span></div><a href="https://www.microsoft.com/en-us/microsoft-365/office" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🎨</div><div class="card-info"><span class="card-name">Photoshop 2024</span><span class="card-desc">设计必备，修图神器</span></div><a href="https://www.adobe.com/products/photoshop.html" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">✂️</div><div class="card-info"><span class="card-name">剪映专业版</span><span class="card-desc">简单易用，国产剪辑</span></div><a href="https://www.capcut.cn/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">📝</div><div class="card-info"><span class="card-name">Obsidian 1.5</span><span class="card-desc">双链笔记，本地存储</span></div><a href="https://obsidian.md/download" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🧠</div><div class="card-info"><span class="card-name">Xmind 2024</span><span class="card-desc">思维导图，脑图工具</span></div><a href="https://xmind.app/download/" class="download-link" target="_blank">下载</a></div>
         </div>
       </div>
 
@@ -541,67 +579,83 @@
       <div id="page-fun" class="category-page">
         <div class="page-header">📂 娱乐 (听歌·视频·游戏·聊天)</div>
         <div class="software-grid">
-          <div class="soft-card"><div class="icon32">🎵</div><div class="card-info"><span class="card-name">Spotify</span><span class="card-desc">国际主流，海量曲库</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Spotify')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🎬</div><div class="card-info"><span class="card-name">PotPlayer</span><span class="card-desc">万能播放器，解码强</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：PotPlayer')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🎮</div><div class="card-info"><span class="card-name">Steam</span><span class="card-desc">游戏平台，必装</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Steam')">下载</a></div>
-          <div class="soft-card"><div class="icon32">💬</div><div class="card-info"><span class="card-name">Discord</span><span class="card-desc">语音聊天，游戏社区</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Discord')">下载</a></div>
+          <div class="soft-card"><div class="icon32">🎵</div><div class="card-info"><span class="card-name">Spotify</span><span class="card-desc">国际主流，海量曲库</span></div><a href="https://www.spotify.com/download" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🎬</div><div class="card-info"><span class="card-name">PotPlayer</span><span class="card-desc">万能播放器，解码强</span></div><a href="https://potplayer.daum.net/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🎮</div><div class="card-info"><span class="card-name">Steam</span><span class="card-desc">游戏平台，必装</span></div><a href="https://store.steampowered.com/about/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">💬</div><div class="card-info"><span class="card-name">Discord</span><span class="card-desc">语音聊天，游戏社区</span></div><a href="https://discord.com/download" class="download-link" target="_blank">下载</a></div>
         </div>
       </div>
 
       <!-- ===== 小众页面 (一行两个) ===== -->
       <div id="page-niche" class="category-page">
-        <div class="page-header">📂 小众 (效率神器·开源替代·便携好用)</div>
+        <div class="page-header">📂 小众 (效率神器·开源替代·便携版)</div>
         <div class="software-grid">
-          <div class="soft-card"><div class="icon32">🔍</div><div class="card-info"><span class="card-name">Everything 1.4</span><span class="card-desc">秒级文件搜索</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Everything')">下载</a></div>
-          <div class="soft-card"><div class="icon32">📋</div><div class="card-info"><span class="card-name">Ditto</span><span class="card-desc">剪贴板历史增强</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：Ditto')">下载</a></div>
-          <div class="soft-card"><div class="icon32">🖌️</div><div class="card-info"><span class="card-name">GIMP</span><span class="card-desc">开源PS替代</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：GIMP')">下载</a></div>
-          <div class="soft-card"><div class="icon32">📦</div><div class="card-info"><span class="card-name">PortableApps</span><span class="card-desc">便携软件平台</span></div><a href="#" class="download-link" target="_blank" onclick="alert('模拟下载：PortableApps')">下载</a></div>
+          <div class="soft-card"><div class="icon32">🔍</div><div class="card-info"><span class="card-name">Everything 1.4</span><span class="card-desc">秒级文件搜索</span></div><a href="https://www.voidtools.com/downloads/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">📋</div><div class="card-info"><span class="card-name">Ditto</span><span class="card-desc">剪贴板历史增强</span></div><a href="https://ditto-cp.sourceforge.io/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">🖌️</div><div class="card-info"><span class="card-name">GIMP</span><span class="card-desc">开源PS替代</span></div><a href="https://www.gimp.org/downloads/" class="download-link" target="_blank">下载</a></div>
+          <div class="soft-card"><div class="icon32">📦</div><div class="card-info"><span class="card-name">PortableApps</span><span class="card-desc">便携软件平台</span></div><a href="https://portableapps.com/download" class="download-link" target="_blank">下载</a></div>
         </div>
       </div>
 
-      <!-- ===== 有趣页面 (四列布局，无按钮，整块可点，自动获取favicon) ===== -->
+      <!-- ===== 有趣页面 (图标左，名称上，简介下) ===== -->
       <div id="page-interesting" class="category-page">
-        <div class="page-header">📂 有趣 (好玩网站链接 · 点击即可访问)</div>
+        <div class="page-header">📂 有趣 (好玩的网站链接 · 点击卡片直接访问)</div>
         <div class="links-grid">
           <a class="link-card" href="https://www.coolapk.com" target="_blank">
             <div class="link-icon"><img src="https://www.google.com/s2/favicons?domain=coolapk.com&sz=32" alt="icon"></div>
-            <div class="link-name">酷安</div>
-            <div class="link-desc">数码爱好者社区，软件推荐</div>
+            <div class="link-info">
+              <div class="link-name">酷安</div>
+              <div class="link-desc">数码爱好者社区，软件推荐</div>
+            </div>
           </a>
           <a class="link-card" href="https://www.appinn.com" target="_blank">
             <div class="link-icon"><img src="https://www.google.com/s2/favicons?domain=appinn.com&sz=32" alt="icon"></div>
-            <div class="link-name">小众软件</div>
-            <div class="link-desc">发现更多有趣软件</div>
+            <div class="link-info">
+              <div class="link-name">小众软件</div>
+              <div class="link-desc">发现更多有趣软件</div>
+            </div>
           </a>
           <a class="link-card" href="https://github.com" target="_blank">
             <div class="link-icon"><img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" alt="icon"></div>
-            <div class="link-name">GitHub</div>
-            <div class="link-desc">开源项目聚集地</div>
+            <div class="link-info">
+              <div class="link-name">GitHub</div>
+              <div class="link-desc">开源项目聚集地</div>
+            </div>
           </a>
           <a class="link-card" href="https://www.bilibili.com" target="_blank">
             <div class="link-icon"><img src="https://www.google.com/s2/favicons?domain=bilibili.com&sz=32" alt="icon"></div>
-            <div class="link-name">Bilibili</div>
-            <div class="link-desc">装机教程/软件测评</div>
+            <div class="link-info">
+              <div class="link-name">Bilibili</div>
+              <div class="link-desc">装机教程/软件测评</div>
+            </div>
           </a>
           <a class="link-card" href="https://www.v2ex.com" target="_blank">
             <div class="link-icon"><img src="https://www.google.com/s2/favicons?domain=v2ex.com&sz=32" alt="icon"></div>
-            <div class="link-name">V2EX</div>
-            <div class="link-desc">技术交流/软件推荐</div>
+            <div class="link-info">
+              <div class="link-name">V2EX</div>
+              <div class="link-desc">技术交流/软件推荐</div>
+            </div>
           </a>
           <a class="link-card" href="https://www.ithome.com" target="_blank">
             <div class="link-icon"><img src="https://www.google.com/s2/favicons?domain=ithome.com&sz=32" alt="icon"></div>
-            <div class="link-name">IT之家</div>
-            <div class="link-desc">科技资讯/软件动态</div>
+            <div class="link-info">
+              <div class="link-name">IT之家</div>
+              <div class="link-desc">科技资讯/软件动态</div>
+            </div>
           </a>
           <a class="link-card" href="https://www.zhihu.com" target="_blank">
             <div class="link-icon"><img src="https://www.google.com/s2/favicons?domain=zhihu.com&sz=32" alt="icon"></div>
-            <div class="link-name">知乎</div>
-            <div class="link-desc">软件推荐/使用技巧</div>
+            <div class="link-info">
+              <div class="link-name">知乎</div>
+              <div class="link-desc">软件推荐/使用技巧</div>
+            </div>
           </a>
           <a class="link-card" href="https://www.163.com" target="_blank">
             <div class="link-icon"><img src="https://www.google.com/s2/favicons?domain=163.com&sz=32" alt="icon"></div>
-            <div class="link-name">网易</div>
-            <div class="link-desc">新闻/邮箱/云音乐</div>
+            <div class="link-info">
+              <div class="link-name">网易</div>
+              <div class="link-desc">新闻/邮箱/云音乐</div>
+            </div>
           </a>
         </div>
       </div>
@@ -609,15 +663,17 @@
 
     <!-- 底部导航栏 -->
     <div class="bottom-nav">
-      <!-- 开始按钮 -->
+      <!-- 开始按钮 (修复Windows徽标) -->
       <div class="start-button" id="startBtn">
-        <span>🪟</span> 开始
+        <span class="win-logo">🪟</span>
+        <span>开始</span>
       </div>
       
       <!-- 开始菜单弹出层 -->
       <div class="start-menu" id="startMenu">
         <div class="start-menu-header">
-          <span>🪟</span> HellYell 导航
+          <span class="win-logo-small">🪟</span>
+          <span>HellYell导航</span>
         </div>
         <div class="start-menu-item">
           <span>📋</span> 关于本导航
@@ -648,10 +704,9 @@
         <div id="tab-interesting" class="folder-item" data-page="interesting"><span>📁</span> 有趣</div>
       </div>
 
-      <!-- 托盘区 - 两行显示 (时间+日期) -->
+      <!-- 托盘区 - 一行显示 (日期+时间) -->
       <div class="tray-area" id="trayArea">
-        <div class="tray-time" id="trayTime">21:46:30</div>
-        <div class="tray-date" id="trayDate">2026/3/16 星期一</div>
+        <span id="trayDateTime">2026/3/16 周一 10:19:04</span>
       </div>
     </div>
   </div>
@@ -713,13 +768,13 @@
           if (text.includes('关闭开始菜单')) {
             startMenu.classList.remove('show');
           } else if (text.includes('关于本导航')) {
-            alert('Windows 95 风格软件导航\n\n收集 Windows 必备软件\n装机一条龙');
+            alert('HellYell导航 - 让美好发声\n\nWindows 95 复古风格软件导航站\n收集 Windows 必备软件，装机一条龙');
           } else if (text.includes('版本 1.0')) {
-            alert('HellYell导航 · 复古版 v1.0\n\n基于 Windows 95 界面复刻');
+            alert('HellYell导航 · 复古版 v1.0\n\n基于 Windows 95 界面复刻\n让美好发声');
           } else if (text.includes('装机必备清单')) {
             alert('系统 → 必装 → 牛马 → 娱乐 → 小众 → 有趣\n\n按顺序装，准没错');
           } else if (text.includes('反馈建议')) {
-            alert('欢迎提出建议\n\n但是没有提交路径:)');
+            alert('欢迎提出建议\n\n让美好发声 · 一起完善这个导航站');
           }
         });
       });
@@ -730,43 +785,31 @@
         }
       });
 
-      // ========== 托盘时间 + 日期 (两行显示) ==========
+      // ========== 托盘日期时间 (一行显示) ==========
       function updateDateTime() {
         const now = new Date();
-        
-        // 时间：时:分:秒
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const seconds = now.getSeconds().toString().padStart(2, '0');
-        const timeString = `${hours}:${minutes}:${seconds}`;
         
         // 日期：年/月/日
         const year = now.getFullYear();
         const month = (now.getMonth() + 1).toString().padStart(2, '0');
         const day = now.getDate().toString().padStart(2, '0');
         
-        // 星期几
-        const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+        // 星期几（用“周一”这种简称）
+        const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
         const weekday = weekdays[now.getDay()];
         
-        const dateString = `${year}/${month}/${day} ${weekday}`;
+        // 时间：时:分:秒
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
         
-        document.getElementById('trayTime').innerText = timeString;
-        document.getElementById('trayDate').innerText = dateString;
+        const dateTimeString = `${year}/${month}/${day} ${weekday} ${hours}:${minutes}:${seconds}`;
+        
+        document.getElementById('trayDateTime').innerText = dateTimeString;
       }
       
       updateDateTime();
       setInterval(updateDateTime, 1000);
-
-      // ========== 所有下载链接新窗口打开 + 模拟提示 ==========
-      document.querySelectorAll('.download-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          const card = this.closest('.soft-card');
-          const name = card?.querySelector('.card-name')?.innerText || '软件';
-          alert(`[模拟下载] 开始下载: ${name}\n(复古导航站演示)`);
-        });
-      });
     })();
   </script>
 </body>
