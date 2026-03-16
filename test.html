@@ -636,18 +636,31 @@
     <div class="bottom-nav">
       <!-- 开始按钮 (彩色Windows旗帜) -->
       <div class="start-button" id="startBtn">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAbwAAAG8B8aLcQwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAIrSURBVDiNfZLNTxNBFMO/u7Nd2i2USgvWRo1fxESvhoOJhIuGn6d6MfHkxUQv/gnePPgHmHjzZvRkwGAiBgwaiQc0sUU+AltLu7S7OzPzXAi0QRp/yUkmmXm/ecnMA0opmHieh+M4kFICESAibLfb4HmeMAyBEAJrrc2kUim0220wY8aMGSgUChBCoFqtotVqQSmF8Xg8q9frgVIKzrmZvu+jUqmAiBCO43i5XA6KxeKDVquF9Xr9QQiBdDoNa+04juNqLpfb29/fR7fbRZZlSCaTsNbCcZx3URTpVCoV12o1dLtdFItF5PN5GGNgrd3a2dl5X6lUqFarodPpwBgjSSml4rouhBDwPA+5XM51XRfGGBhjoJTCcDgcl0ol9Ho9tNttWZYlKaU0z/NgjIHneUgkEmg0GqjX68hms5RkGdZa2TAM/15eXp6WSiWMRiOMRiM9GAz05eWlVkohl8shm81iMplgNpv9A6hUwoxxPC+P45i01tBaY7FYwFqLMAwxnU4BAJ7nwTEGYwzL5RKMMVhrkUwmsVwuEUUR5vM5giA41Vq/iaIIiUQCjDEoIBzHAecchUIB5+fnKJVKqNVqqFarcBwHWmuEYYggCJDNZn+HYTjO5/Mn4/EY4/EYQRB8TafT8c3NjWxtbcnRaKR2dnZ0tVpVs9lMT6dTvb+/rw8PD/VwONStVkvP53M9mUz0cDjUh4eHOk1Tba2lMAw1M+u1cBwnFUL8/RhjjDHGkFLS2kIIY4yRUoq12g0A4vs/yP8BDC+O2HIHt1cAAAAASUVORK5CYII=" 
-       alt="Start" style="width: 20px; height: 20px; image-rendering: pixelated; border: none; margin-right: 4px;">
-          <span>开始</span>
-      </div>
+  <div style="display: flex; align-items: center; gap: 4px;">
+    <div style="position: relative; width: 18px; height: 18px;">
+      <!-- 旗帜主体 (四色Windows标志) -->
+      <div style="position: absolute; top: 2px; left: 0; width: 7px; height: 7px; background: #F25022; border: 1px solid #000;"></div>
+      <div style="position: absolute; top: 2px; left: 8px; width: 7px; height: 7px; background: #7FBA00; border: 1px solid #000;"></div>
+      <div style="position: absolute; top: 10px; left: 0; width: 7px; height: 7px; background: #00A4EF; border: 1px solid #000;"></div>
+      <div style="position: absolute; top: 10px; left: 8px; width: 7px; height: 7px; background: #FFB900; border: 1px solid #000;"></div>
+    </div>
+    <span>开始</span>
+  </div>
+</div>
       
       <!-- 开始菜单弹出层 -->
       <div class="start-menu" id="startMenu">
         <div class="start-menu-header">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAbwAAAG8B8aLcQwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAIrSURBVDiNfZLNTxNBFMO/u7Nd2i2USgvWRo1fxESvhoOJhIuGn6d6MfHkxUQv/gnePPgHmHjzZvRkwGAiBgwaiQc0sUU+AltLu7S7OzPzXAi0QRp/yUkmmXm/ecnMA0opmHieh+M4kFICESAibLfb4HmeMAyBEAJrrc2kUim0220wY8aMGSgUChBCoFqtotVqQSmF8Xg8q9frgVIKzrmZvu+jUqmAiBCO43i5XA6KxeKDVquF9Xr9QQiBdDoNa+04juNqLpfb29/fR7fbRZZlSCaTsNbCcZx3URTpVCoV12o1dLtdFItF5PN5GGNgrd3a2dl5X6lUqFarodPpwBgjSSml4rouhBDwPA+5XM51XRfGGBhjoJTCcDgcl0ol9Ho9tNttWZYlKaU0z/NgjIHneUgkEmg0GqjX68hms5RkGdZa2TAM/15eXp6WSiWMRiOMRiM9GAz05eWlVkohl8shm81iMplgNpv9A6hUwoxxPC+P45i01tBaY7FYwFqLMAwxnU4BAJ7nwTEGYwzL5RKMMVhrkUwmsVwuEUUR5vM5giA41Vq/iaIIiUQCjDEoIBzHAecchUIB5+fnKJVKqNVqqFarcBwHWmuEYYggCJDNZn+HYTjO5/Mn4/EY4/EYQRB8TafT8c3NjWxtbcnRaKR2dnZ0tVpVs9lMT6dTvb+/rw8PD/VwONStVkvP53M9mUz0cDjUh4eHOk1Tba2lMAw1M+u1cBwnFUL8/RhjjDHGkFLS2kIIY4yRUoq12g0A4vs/yP8BDC+O2HIHt1cAAAAASUVORK5CYII=" 
-       alt="Start" style="width: 18px; height: 18px; image-rendering: pixelated; border: none; margin-right: 4px;">
-          <span>HellYell导航</span>
-        </div>
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <div style="position: relative; width: 16px; height: 16px;">
+      <div style="position: absolute; top: 1px; left: 0; width: 6px; height: 6px; background: #F25022; border: 1px solid #000;"></div>
+      <div style="position: absolute; top: 1px; left: 7px; width: 6px; height: 6px; background: #7FBA00; border: 1px solid #000;"></div>
+      <div style="position: absolute; top: 8px; left: 0; width: 6px; height: 6px; background: #00A4EF; border: 1px solid #000;"></div>
+      <div style="position: absolute; top: 8px; left: 7px; width: 6px; height: 6px; background: #FFB900; border: 1px solid #000;"></div>
+    </div>
+    <span>HellYell导航</span>
+  </div>
+</div>
         <div class="start-menu-item">
           <span>📋</span> 关于本导航
         </div>
