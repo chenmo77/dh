@@ -469,7 +469,7 @@
       background: #b0b0b0;
     }
 
-    /* 托盘区 - 一行显示 */
+    /* 托盘区 - 带喇叭图标 */
     .tray-area {
       background: #c0c0c0;
       border-top: 2px solid #404040;
@@ -480,8 +480,44 @@
       font-size: 11px;
       font-weight: bold;
       white-space: nowrap;
-      min-width: 180px;
+      min-width: 200px;
       text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    
+    /* 喇叭图标样式 */
+    .speaker-icon {
+      width: 20px;
+      height: 20px;
+      background: #c0c0c0;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #808080;
+      border-bottom: 2px solid #808080;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      font-size: 14px;
+      transition: all 0.1s;
+    }
+    .speaker-icon.active {
+      background: #ffff00;
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-right: 2px solid #ffffff;
+      border-bottom: 2px solid #ffffff;
+      animation: speakerPulse 1s infinite;
+    }
+    
+    /* 播放动画 */
+    @keyframes speakerPulse {
+      0% { background: #ffff00; }
+      50% { background: #ffaa00; }
+      100% { background: #ffff00; }
     }
 
     /* 分类页面切换 */
@@ -506,6 +542,11 @@
       font-size: 14px;
       line-height: 1;
     }
+
+    /* 隐藏音频元素 */
+    #bgMusic {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -522,11 +563,17 @@
         <span style="font-size: 48px; color: #c0c0c0;">HellYell导航</span>
       </div>
     </div>
-    <div class="boot-text">正在启动中……</div>
+    <div class="boot-text">启动中……</div>
     <div class="boot-progress">
       <div class="boot-progress-bar"></div>
     </div>
   </div>
+
+  <!-- 背景音乐 (隐藏) -->
+  <audio id="bgMusic" loop>
+    <source src="https://funkyradio.streamingmedia.it/play.mp3" type="audio/mpeg">
+    您的浏览器不支持音频播放
+  </audio>
 
   <!-- 主窗口 -->
   <div class="win95-window" id="mainWindow">
@@ -683,7 +730,7 @@
         </div>
       </div>
       
-      <!-- 开始菜单弹出层 - 优化版 -->
+      <!-- 开始菜单弹出层 -->
       <div class="start-menu" id="startMenu">
         <!-- HellYell导航 (无二级菜单，点击无效) -->
         <div class="start-menu-item" id="menuHome">
@@ -694,7 +741,8 @@
         <div class="start-menu-item" id="menuNotice">
           <span>📢</span> 通知公告
           <div class="submenu" id="submenuNotice">
-            <div class="submenu-item">📅 2026年3月16日更新为Windows95纪念版。</div>
+            <div class="submenu-item">📅 2026/3/16更新Win95复古版</div>
+            <div class="submenu-item">📅 2022/2/22建站</div>
           </div>
         </div>
         
@@ -734,8 +782,9 @@
         <div id="tab-interesting" class="folder-item" data-page="interesting"><span>📁</span> 有趣</div>
       </div>
 
-      <!-- 托盘区 -->
-      <div class="tray-area" id="trayArea">
+      <!-- 托盘区 - 带喇叭图标 -->
+      <div class="tray-area">
+        <div class="speaker-icon" id="speakerIcon">🔈</div>
         <span id="trayDateTime">2026/3/16 周一 10:19:04</span>
       </div>
     </div>
@@ -800,13 +849,12 @@
         startMenu.classList.remove('show');
       });
 
-      // 点击HellYell导航无效果（但保留悬停样式）
+      // 点击HellYell导航无效果
       menuHome.addEventListener('click', function(e) {
         e.stopPropagation();
-        // 什么也不做
       });
 
-      // 点击其他菜单项阻止冒泡（避免误关菜单）
+      // 点击其他菜单项阻止冒泡
       document.querySelectorAll('.start-menu-item').forEach(item => {
         item.addEventListener('click', function(e) {
           e.stopPropagation();
@@ -849,6 +897,36 @@
       
       updateDateTime();
       setInterval(updateDateTime, 1000);
+
+      // ========== 音乐播放器控制 ==========
+      const audio = document.getElementById('bgMusic');
+      const speakerIcon = document.getElementById('speakerIcon');
+      let isPlaying = false;
+
+      speakerIcon.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        if (!isPlaying) {
+          // 尝试播放
+          audio.play().then(() => {
+            isPlaying = true;
+            speakerIcon.classList.add('active');
+            speakerIcon.textContent = '🔊';
+          }).catch(error => {
+            console.log('播放失败:', error);
+            alert('无法播放音乐，请检查网络或浏览器设置');
+          });
+        } else {
+          // 暂停
+          audio.pause();
+          isPlaying = false;
+          speakerIcon.classList.remove('active');
+          speakerIcon.textContent = '🔈';
+        }
+      });
+
+      // 自动播放策略：浏览器通常禁止自动播放，需要用户交互
+      // 所以第一次点击喇叭才会开始播放
     })();
   </script>
 </body>
