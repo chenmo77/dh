@@ -1028,6 +1028,87 @@ function copyText(text) {
     showWin95Dialog('✅ 已复制到剪贴板：\n' + text);
   });
 }
+
+    // ========== 右上角按钮有趣互动 ==========
+document.addEventListener('DOMContentLoaded', function() {
+  const winBtns = document.querySelectorAll('.win-btn');
+  
+  // 最小化按钮 (_)
+  winBtns[0].addEventListener('click', function(e) {
+    e.stopPropagation();
+    showWin95Dialog('哼！想把我藏起来？没门！');
+  });
+  
+  // 最大化按钮 (□)
+  winBtns[1].addEventListener('click', function(e) {
+    e.stopPropagation();
+    showWin95Dialog('想全屏？按 F11 更快哦～');
+  });
+  
+  // 关闭按钮 (×)
+  winBtns[2].addEventListener('click', function(e) {
+    e.stopPropagation();
+    showBlueScreen();
+  });
+});
+
+// ========== Windows 95 经典蓝屏 ==========
+function showBlueScreen() {
+  // 创建蓝屏遮罩
+  const bsOverlay = document.createElement('div');
+  bsOverlay.style.position = 'fixed';
+  bsOverlay.style.top = '0';
+  bsOverlay.style.left = '0';
+  bsOverlay.style.width = '100%';
+  bsOverlay.style.height = '100%';
+  bsOverlay.style.backgroundColor = '#0000aa'; // 经典蓝屏蓝
+  bsOverlay.style.zIndex = '20000';
+  bsOverlay.style.display = 'flex';
+  bsOverlay.style.flexDirection = 'column';
+  bsOverlay.style.alignItems = 'center';
+  bsOverlay.style.justifyContent = 'center';
+  bsOverlay.style.color = '#ffffff';
+  bsOverlay.style.fontFamily = "'MS Sans Serif', 'Fixedsys', monospace";
+  bsOverlay.style.fontSize = '20px';
+  bsOverlay.style.padding = '40px';
+  bsOverlay.style.textAlign = 'center';
+  bsOverlay.style.cursor = 'default';
+  
+  // 蓝屏内容
+  bsOverlay.innerHTML = `
+    <div style="width: 80%; max-width: 600px; text-align: left;">
+      <div style="font-size: 36px; margin-bottom: 30px; text-align: center;">🟦 Windows 95</div>
+      <div style="margin-bottom: 20px;">A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00009E36. The current application will be terminated.</div>
+      <div style="margin-bottom: 30px;">* Press any key to continue<br>* Press CTRL+ALT+DEL to restart your computer. You will lose any unsaved information in all applications.</div>
+      <div style="font-size: 16px; color: #ffffaa; text-align: center;">吓着你了吧？按任意键或点击鼠标继续</div>
+    </div>
+  `;
+  
+  document.body.appendChild(bsOverlay);
+  
+  // 按任意键或点击关闭蓝屏
+  const closeBlueScreen = function() {
+    if (document.body.contains(bsOverlay)) {
+      document.body.removeChild(bsOverlay);
+    }
+    document.removeEventListener('keydown', keyHandler);
+    document.removeEventListener('click', clickHandler);
+  };
+  
+  const keyHandler = function() {
+    closeBlueScreen();
+  };
+  
+  const clickHandler = function() {
+    closeBlueScreen();
+  };
+  
+  document.addEventListener('keydown', keyHandler);
+  document.addEventListener('click', clickHandler);
+  
+  // 10秒后自动关闭（以防万一）
+  setTimeout(closeBlueScreen, 10000);
+}
   </script>
 </body>
 </html>
