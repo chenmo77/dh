@@ -774,23 +774,6 @@
           bootScreen.style.display = 'none';
         }, 300);
       }, 500);
-
-    // ========== 通用复制功能 ==========
-    function copyText(text) {
-    // 使用 Clipboard API 复制
-      navigator.clipboard.writeText(text).then(() => {
-        alert('✅ 已复制到剪贴板：\n' + text);
-      }).catch(() => {
-    // 降级方案
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      alert('✅ 已复制到剪贴板：\n' + text);
-      });
-      }
       
       // ========== 底部文件夹切换 ==========
       const tabs = document.querySelectorAll('.folder-item');
@@ -916,6 +899,22 @@
       // 自动播放策略：浏览器通常禁止自动播放，需要用户交互
       // 所以第一次点击喇叭才会开始播放
     })();
+          // ========== 通用复制功能 ==========
+      function copyText(text) {
+      // 使用 Clipboard API 复制
+      navigator.clipboard.writeText(text).then(() => {
+          alert('✅ 已复制到剪贴板：\n' + text);
+        }).catch(() => {
+      // 降级方案
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+        alert('✅ 已复制到剪贴板：\n' + text);
+      });
+      }
   </script>
 </body>
 </html>
