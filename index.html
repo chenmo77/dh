@@ -1076,21 +1076,52 @@ function showBlueScreen() {
   bsOverlay.style.alignItems = 'center';
   bsOverlay.style.justifyContent = 'center';
   bsOverlay.style.color = '#ffffff';
-  bsOverlay.style.fontFamily = "'MS Sans Serif', 'Fixedsys', monospace";
-  bsOverlay.style.fontSize = '20px';
-  bsOverlay.style.padding = '40px';
-  bsOverlay.style.textAlign = 'center';
+  bsOverlay.style.fontFamily = "'Fixedsys', 'MS Sans Serif', 'Courier New', monospace";
+  bsOverlay.style.fontSize = '16px';
+  bsOverlay.style.padding = '20px';
+  bsOverlay.style.textAlign = 'left';
   bsOverlay.style.cursor = 'default';
+  bsOverlay.style.lineHeight = '1.5';
   
-  // 蓝屏内容
+  // 蓝屏内容 - Win95经典样式
   bsOverlay.innerHTML = `
-    <div style="width: 80%; max-width: 600px; text-align: left;">
-      <div style="font-size: 36px; margin-bottom: 30px; text-align: center;">Oops!! Blue screen.</div>
-      <div style="margin-bottom: 20px;">A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00009E36. The current application will be terminated.<br>Press CTRL+ALT+DEL to restart your computer. You will lose any unsaved information in all applications.</div>
-      <div style="margin-bottom: 30px;">* Welcome to dh.hellyell.com. This was just a little joke of ours.<br>* Press any key to continue</div>
-      <div style="font-size: 16px; color: #ffffaa; text-align: center;">吓着你了吧 ^_^ 按任意键或点击鼠标返回，又或者你别动，放着我来~</div>
+    <div style="width: 90%; max-width: 700px;">
+      <div style="font-size: 48px; margin-bottom: 30px; text-align: center; letter-spacing: 2px;">Oops!</div>
+      
+      <div style="margin-bottom: 25px; font-family: 'Fixedsys', monospace;">
+        A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00009E36. The current application will be terminated.
+      </div>
+      
+      <div style="margin-bottom: 25px; font-family: 'Fixedsys', monospace;">
+        * Press any key to continue<br>
+        * Press CTRL+ALT+DEL to restart your computer. You will lose any unsaved information in all applications.
+      </div>
+      
+      <div style="margin-bottom: 30px; font-family: 'Fixedsys', monospace; color: #ffffaa;">
+        * Welcome to dh.hellyell.com. This was just a little joke of ours.<br>
+        * Press any key to continue
+      </div>
+      
+      <div style="font-size: 18px; color: #ffffff; text-align: center; margin-top: 20px; animation: blink 1s infinite;">
+        
+      </div>
+      
+      <div style="font-size: 16px; color: #ffffaa; text-align: center; margin-top: 10px;">
+        吓着你了吧 ^_^ 按任意键或点击鼠标返回，又或者你别动，放着我来~
+      </div>
     </div>
   `;
+  
+  // 添加闪烁光标动画
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
   
   document.body.appendChild(bsOverlay);
   
