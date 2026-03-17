@@ -1109,6 +1109,218 @@ function showBlueScreen() {
   // 10秒后自动关闭（以防万一）
   setTimeout(closeBlueScreen, 10000);
 }
+    // ========== 非Windows设备强制提示窗 ==========
+(function() {
+  // 检测操作系统
+  const ua = navigator.userAgent;
+  const isWindows = /Windows|Win64|Win32|WOW64/i.test(ua);
+  const isMac = /Macintosh|Mac OS X|MacPPC|MacIntel|Mac_PowerPC/i.test(ua);
+  const isiPhone = /iPhone|iPad|iPod/i.test(ua);
+  const isAndroid = /Android/i.test(ua);
+  const isLinux = /Linux/i.test(ua) && !/Android/i.test(ua);
+  
+  // 需要拦截的设备：非Windows设备（包括Mac、iPhone、iPad、Android、Linux等）
+  const isNotWindows = !isWindows;
+  
+  if (isNotWindows) {
+    // 立即阻止页面渲染和滚动
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    
+    // 创建全屏遮罩
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = '#008080';
+    overlay.style.zIndex = '999999';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.padding = '20px';
+    overlay.style.boxSizing = 'border-box';
+    
+    // 判断设备类型，用于显示不同的提示
+    let deviceType = '';
+    if (isiPhone) deviceType = 'iPhone/iPad';
+    else if (isMac) deviceType = 'Mac 电脑';
+    else if (isAndroid) deviceType = 'Android 设备';
+    else if (isLinux) deviceType = 'Linux 系统';
+    else deviceType = '非Windows设备';
+    
+    // 创建Win95风格窗口
+    const win95Window = document.createElement('div');
+    win95Window.style.width = '100%';
+    win95Window.style.maxWidth = '400px';
+    win95Window.style.background = '#c0c0c0';
+    win95Window.style.borderTop = '3px solid #ffffff';
+    win95Window.style.borderLeft = '3px solid #ffffff';
+    win95Window.style.borderRight = '3px solid #404040';
+    win95Window.style.borderBottom = '3px solid #404040';
+    win95Window.style.boxShadow = '4px 4px 0 rgba(0,0,0,0.5)';
+    win95Window.style.fontFamily = "'MS Sans Serif', 'Microsoft Sans Serif', '宋体', monospace";
+    
+    // 标题栏
+    const titleBar = document.createElement('div');
+    titleBar.style.background = 'linear-gradient(90deg, #000080, #1084d0)';
+    titleBar.style.padding = '8px 10px';
+    titleBar.style.color = 'white';
+    titleBar.style.fontWeight = 'bold';
+    titleBar.style.fontSize = '16px';
+    titleBar.style.display = 'flex';
+    titleBar.style.alignItems = 'center';
+    titleBar.style.gap = '6px';
+    titleBar.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="position: relative; width: 24px; height: 24px;">
+          <div style="position: absolute; top: 2px; left: 0; width: 10px; height: 10px; background: #F25022; border: 1px solid #fff;"></div>
+          <div style="position: absolute; top: 2px; left: 11px; width: 10px; height: 10px; background: #7FBA00; border: 1px solid #fff;"></div>
+          <div style="position: absolute; top: 13px; left: 0; width: 10px; height: 10px; background: #00A4EF; border: 1px solid #fff;"></div>
+          <div style="position: absolute; top: 13px; left: 11px; width: 10px; height: 10px; background: #FFB900; border: 1px solid #fff;"></div>
+        </div>
+        <span>HellYell导航</span>
+      </div>
+    `;
+    
+    // 内容区
+    const contentArea = document.createElement('div');
+    contentArea.style.background = '#fffff0';
+    contentArea.style.margin = '12px';
+    contentArea.style.padding = '20px';
+    contentArea.style.borderTop = '2px solid #404040';
+    contentArea.style.borderLeft = '2px solid #404040';
+    contentArea.style.borderRight = '2px solid #dfdfdf';
+    contentArea.style.borderBottom = '2px solid #dfdfdf';
+    
+    // 图标和文字
+    contentArea.innerHTML = `
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 48px; margin-bottom: 10px;">🪟💻</div>
+        <div style="font-size: 20px; font-weight: bold; color: #000080; margin-bottom: 15px;">仅限 Windows 电脑</div>
+      </div>
+      <div style="font-size: 14px; line-height: 1.6; color: #000; margin-bottom: 15px;">
+        <p style="margin-bottom: 10px;">📱 检测到您正在使用 <strong style="color: #000080;">${deviceType}</strong> 访问。</p>
+        <p style="margin-bottom: 10px;">本网站专为 <strong style="color: #000080;">Windows 电脑用户</strong> 设计，提供系统安装、软件下载等服务。</p>
+        <p style="margin-bottom: 10px;">请在 Windows 电脑上打开以获得最佳体验。</p>
+      </div>
+      <div style="font-size: 13px; color: #666; text-align: center; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #aaa;">
+        感谢您的理解与支持 🙏
+      </div>
+    `;
+    
+    // 底部按钮区
+    const buttonArea = document.createElement('div');
+    buttonArea.style.padding = '0 12px 16px 12px';
+    buttonArea.style.display = 'flex';
+    buttonArea.style.justifyContent = 'center';
+    
+    const closePageBtn = document.createElement('button');
+    closePageBtn.innerText = '关闭页面';
+    closePageBtn.style.background = '#c0c0c0';
+    closePageBtn.style.borderTop = '3px solid #ffffff';
+    closePageBtn.style.borderLeft = '3px solid #ffffff';
+    closePageBtn.style.borderRight = '3px solid #404040';
+    closePageBtn.style.borderBottom = '3px solid #404040';
+    closePageBtn.style.padding = '12px 40px';
+    closePageBtn.style.fontFamily = "'MS Sans Serif', monospace";
+    closePageBtn.style.fontSize = '16px';
+    closePageBtn.style.fontWeight = 'bold';
+    closePageBtn.style.cursor = 'pointer';
+    closePageBtn.style.width = '100%';
+    closePageBtn.style.maxWidth = '200px';
+    
+    // 按钮按下效果
+    closePageBtn.addEventListener('mousedown', function() {
+      this.style.borderTop = '3px solid #404040';
+      this.style.borderLeft = '3px solid #404040';
+      this.style.borderRight = '3px solid #ffffff';
+      this.style.borderBottom = '3px solid #ffffff';
+    });
+    
+    closePageBtn.addEventListener('mouseup', function() {
+      this.style.borderTop = '3px solid #ffffff';
+      this.style.borderLeft = '3px solid #ffffff';
+      this.style.borderRight = '3px solid #404040';
+      this.style.borderBottom = '3px solid #ffffff';
+    });
+    
+    closePageBtn.addEventListener('mouseleave', function() {
+      this.style.borderTop = '3px solid #ffffff';
+      this.style.borderLeft = '3px solid #ffffff';
+      this.style.borderRight = '3px solid #404040';
+      this.style.borderBottom = '3px solid #404040';
+    });
+    
+    // 关闭页面功能
+    closePageBtn.onclick = function() {
+      // 尝试关闭窗口
+      window.close();
+      
+      // 如果关闭失败，显示提示
+      setTimeout(() => {
+        alert('⚠️ 浏览器不允许自动关闭窗口，请手动关闭此标签页。');
+      }, 100);
+    };
+    
+    buttonArea.appendChild(closePageBtn);
+    
+    // 组装窗口
+    win95Window.appendChild(titleBar);
+    win95Window.appendChild(contentArea);
+    win95Window.appendChild(buttonArea);
+    overlay.appendChild(win95Window);
+    
+    // 添加到页面
+    document.body.appendChild(overlay);
+    
+    // 阻止所有触摸事件穿透
+    overlay.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }, { passive: false });
+    
+    overlay.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }, { passive: false });
+    
+    // 阻止鼠标事件
+    overlay.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+    
+    // 阻止所有键盘事件
+    document.addEventListener('keydown', function(e) {
+      if (document.body.contains(overlay)) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
+    
+    // 阻止返回键（Android）和 ESC 键
+    document.addEventListener('keyup', function(e) {
+      if (document.body.contains(overlay)) {
+        if (e.key === 'Backspace' || e.key === 'Escape' || e.key === 'Delete') {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }
+    }, true);
+    
+    // 针对Mac的Command+W等快捷键
+    document.addEventListener('keydown', function(e) {
+      if (document.body.contains(overlay)) {
+        if (e.metaKey || e.ctrlKey) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }
+    }, true);
+  }
+})();
   </script>
 </body>
 </html>
