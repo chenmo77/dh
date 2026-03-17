@@ -899,22 +899,127 @@
       // 自动播放策略：浏览器通常禁止自动播放，需要用户交互
       // 所以第一次点击喇叭才会开始播放
     })();
-          // ========== 通用复制功能 ==========
-      function copyText(text) {
-      // 使用 Clipboard API 复制
-      navigator.clipboard.writeText(text).then(() => {
-          alert('✅ 已复制到剪贴板：\n' + text);
-        }).catch(() => {
-      // 降级方案
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-        alert('✅ 已复制到剪贴板：\n' + text);
-      });
-      }
+// ========== Win95风格弹窗 ==========
+function showWin95Dialog(message) {
+  // 创建遮罩层
+  const overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  overlay.style.zIndex = '10000';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  
+  // 创建弹窗
+  const dialog = document.createElement('div');
+  dialog.style.width = '300px';
+  dialog.style.background = '#c0c0c0';
+  dialog.style.borderTop = '2px solid #ffffff';
+  dialog.style.borderLeft = '2px solid #ffffff';
+  dialog.style.borderRight = '2px solid #404040';
+  dialog.style.borderBottom = '2px solid #404040';
+  dialog.style.boxShadow = '2px 2px 0 rgba(0,0,0,0.5)';
+  dialog.style.fontFamily = "'MS Sans Serif', 'Microsoft Sans Serif', monospace";
+  dialog.style.fontSize = '12px';
+  
+  // 标题栏
+  const titleBar = document.createElement('div');
+  titleBar.style.background = 'linear-gradient(90deg, #000080, #1084d0)';
+  titleBar.style.padding = '4px 8px';
+  titleBar.style.color = 'white';
+  titleBar.style.fontWeight = 'bold';
+  titleBar.style.display = 'flex';
+  titleBar.style.justifyContent = 'space-between';
+  titleBar.style.alignItems = 'center';
+  titleBar.innerHTML = '<span>📋 复制成功</span><span style="cursor:default;">✕</span>';
+  
+  // 内容区
+  const content = document.createElement('div');
+  content.style.padding = '16px';
+  content.style.backgroundColor = '#fffff0';
+  content.style.margin = '8px';
+  content.style.borderTop = '2px solid #404040';
+  content.style.borderLeft = '2px solid #404040';
+  content.style.borderRight = '2px solid #dfdfdf';
+  content.style.borderBottom = '2px solid #dfdfdf';
+  content.style.wordBreak = 'break-all';
+  content.style.lineHeight = '1.5';
+  content.innerText = message;
+  
+  // 按钮区
+  const buttonArea = document.createElement('div');
+  buttonArea.style.padding = '8px 16px 16px';
+  buttonArea.style.display = 'flex';
+  buttonArea.style.justifyContent = 'center';
+  
+  const closeBtn = document.createElement('button');
+  closeBtn.innerText = '关闭';
+  closeBtn.style.background = '#c0c0c0';
+  closeBtn.style.borderTop = '2px solid #ffffff';
+  closeBtn.style.borderLeft = '2px solid #ffffff';
+  closeBtn.style.borderRight = '2px solid #404040';
+  closeBtn.style.borderBottom = '2px solid #404040';
+  closeBtn.style.padding = '6px 24px';
+  closeBtn.style.fontFamily = "'MS Sans Serif', monospace";
+  closeBtn.style.fontSize = '12px';
+  closeBtn.style.fontWeight = 'bold';
+  closeBtn.style.cursor = 'pointer';
+  closeBtn.style.outline = 'none';
+  
+  closeBtn.onmouseover = function() {
+    this.style.background = '#d0d0d0';
+  };
+  closeBtn.onmouseout = function() {
+    this.style.background = '#c0c0c0';
+  };
+  closeBtn.onmousedown = function() {
+    this.style.borderTop = '2px solid #404040';
+    this.style.borderLeft = '2px solid #404040';
+    this.style.borderRight = '2px solid #ffffff';
+    this.style.borderBottom = '2px solid #ffffff';
+  };
+  closeBtn.onmouseup = function() {
+    this.style.borderTop = '2px solid #ffffff';
+    this.style.borderLeft = '2px solid #ffffff';
+    this.style.borderRight = '2px solid #404040';
+    this.style.borderBottom = '2px solid #404040';
+  };
+  
+  // 关闭功能
+  const closeDialog = function() {
+    document.body.removeChild(overlay);
+  };
+  
+  closeBtn.onclick = closeDialog;
+  titleBar.querySelector('span:last-child').onclick = closeDialog;
+  
+  // 组装
+  buttonArea.appendChild(closeBtn);
+  dialog.appendChild(titleBar);
+  dialog.appendChild(content);
+  dialog.appendChild(buttonArea);
+  overlay.appendChild(dialog);
+  document.body.appendChild(overlay);
+}
+
+// ========== 通用复制功能（使用Win95弹窗）==========
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showWin95Dialog('✅ 已复制到剪贴板：\n' + text);
+  }).catch(() => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    showWin95Dialog('✅ 已复制到剪贴板：\n' + text);
+  });
+}
   </script>
 </body>
 </html>
