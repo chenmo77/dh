@@ -884,6 +884,61 @@
       updateDateTime();
       setInterval(updateDateTime, 1000);
 
+      // ========== 右下角时间点击互动 ==========
+(function() {
+  const trayDateTime = document.getElementById('trayDateTime');
+  const startTime = new Date();
+  let timeClickCount = 0;
+  
+  if (trayDateTime) {
+    trayDateTime.addEventListener('click', function(e) {
+      e.stopPropagation();
+      timeClickCount++;
+      
+      const now = new Date();
+      const hour = now.getHours();
+      const diff = Math.floor((now - startTime) / 1000);
+      const hours = Math.floor(diff / 3600);
+      const minutes = Math.floor((diff % 3600) / 60);
+      
+      // 根据不同点击次数显示不同内容
+      if (timeClickCount === 1) {
+        // 方案二：根据时间问候
+        let timeMsg = '';
+        let timeEmoji = '';
+        
+        if (hour >= 0 && hour < 6) {
+          timeMsg = '夜深了，还在折腾电脑呢？';
+          timeEmoji = '🌙';
+        } else if (hour >= 6 && hour < 12) {
+          timeMsg = '早上好！今天准备装什么软件？';
+          timeEmoji = '☀️';
+        } else if (hour >= 12 && hour < 14) {
+          timeMsg = '中午了，该吃饭了，别光顾着装机~';
+          timeEmoji = '🍚';
+        } else if (hour >= 14 && hour < 18) {
+          timeMsg = '下午时光，适合研究新软件';
+          timeEmoji = '📚';
+        } else if (hour >= 18 && hour < 22) {
+          timeMsg = '晚上好！享受你的电脑时光';
+          timeEmoji = '🌆';
+        } else {
+          timeMsg = '准备休息了吗？明天再折腾吧';
+          timeEmoji = '🌜';
+        }
+        
+        showWin95Dialog(`${timeEmoji} ${timeMsg}\n\n您已访问本站 ${hours}小时${minutes}分钟`, '时间问候');
+      } 
+      else if (timeClickCount === 2) {
+        showWin95Dialog('⏰ 再点下去会有惊喜哦～', '时间彩蛋');
+      }
+      else if (timeClickCount === 3) {
+        showWin95Dialog('🎯 恭喜发现隐藏彩蛋！\n\n点击右上角 ❌ 有惊喜', '恭喜！');
+        timeClickCount = 0; // 重置计数
+      }
+    });
+  }
+})();
       // ========== 音乐播放器控制 ==========
       const audio = document.getElementById('bgMusic');
       const speakerIcon = document.getElementById('speakerIcon');
