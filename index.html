@@ -910,10 +910,10 @@
         if (hour >= 0 && hour < 6) {
           timeMsg = '夜深了，还在折腾电脑呢？';
           timeEmoji = '🌙';
-        } else if (hour >= 6 && hour < 12) {
+        } else if (hour >= 6 && hour < 11) {
           timeMsg = '早上好！今天准备装什么软件？';
           timeEmoji = '☀️';
-        } else if (hour >= 12 && hour < 14) {
+        } else if (hour >= 11 && hour < 14) {
           timeMsg = '中午了，该吃饭了，别光顾着装机~';
           timeEmoji = '🍚';
         } else if (hour >= 14 && hour < 18) {
@@ -926,14 +926,12 @@
           timeMsg = '准备休息了吗？明天再折腾吧';
           timeEmoji = '🌜';
         }
-        
-        showWin95Dialog(`${timeEmoji} ${timeMsg}\n\n您已访问本站 ${hours}小时${minutes}分钟`, '时间问候');
       } 
       else if (timeClickCount === 2) {
-        showWin95Dialog('⏰ 再点下去会有惊喜哦～', '时间彩蛋');
+        showWin95Dialog(`${timeEmoji} ${timeMsg}\n\n您已访问本站 ${hours}小时${minutes}分钟`, '时间问候');
       }
       else if (timeClickCount === 3) {
-        showWin95Dialog('🎯 恭喜发现隐藏彩蛋！\n\n点击右上角 ❌ 有惊喜', '恭喜！');
+        showWin95Dialog('恭喜发现隐藏彩蛋！\n\n点击右上角 × 有惊喜', '恭喜！');
         timeClickCount = 0; // 重置计数
       }
     });
