@@ -943,7 +943,7 @@ function showWin95Dialog(message) {
   titleBar.style.display = 'flex';
   titleBar.style.justifyContent = 'space-between';
   titleBar.style.alignItems = 'center';
-  titleBar.innerHTML = '<span>📋 复制成功</span><span style="cursor:default;">✕</span>';
+  titleBar.innerHTML = '<span>📢 提示</span><span style="cursor:default;">✕</span>';
   
   // 内容区
   const content = document.createElement('div');
@@ -1077,10 +1077,10 @@ function showBlueScreen() {
   // 蓝屏内容
   bsOverlay.innerHTML = `
     <div style="width: 80%; max-width: 600px; text-align: left;">
-      <div style="font-size: 36px; margin-bottom: 30px; text-align: center;">🟦 Windows 95</div>
+      <div style="font-size: 36px; margin-bottom: 30px; text-align: center;">HellYell导航 dh.hellyell.com</div>
       <div style="margin-bottom: 20px;">A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00009E36. The current application will be terminated.</div>
       <div style="margin-bottom: 30px;">* Press any key to continue<br>* Press CTRL+ALT+DEL to restart your computer. You will lose any unsaved information in all applications.</div>
-      <div style="font-size: 16px; color: #ffffaa; text-align: center;">吓着你了吧？按任意键或点击鼠标继续</div>
+      <div style="font-size: 16px; color: #ffffaa; text-align: center;">吓着你了吧？按任意键或点击鼠标继续，或者你别动，放着我来~</div>
     </div>
   `;
   
