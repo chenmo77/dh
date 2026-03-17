@@ -884,7 +884,7 @@
       updateDateTime();
       setInterval(updateDateTime, 1000);
 
-      // ========== 右下角时间点击互动 ==========
+// ========== 右下角时间点击互动 ==========
 (function() {
   const trayDateTime = document.getElementById('trayDateTime');
   const startTime = new Date();
@@ -903,7 +903,7 @@
       
       // 根据不同点击次数显示不同内容
       if (timeClickCount === 1) {
-        // 方案二：根据时间问候
+        // 第1次：根据时间问候
         let timeMsg = '';
         let timeEmoji = '';
         
@@ -926,12 +926,16 @@
           timeMsg = '准备休息了吗？明天再折腾吧';
           timeEmoji = '🌜';
         }
+        
+        showWin95Dialog(`${timeEmoji} ${timeMsg}`, '时间问候');
       } 
       else if (timeClickCount === 2) {
-        showWin95Dialog(`${timeEmoji} ${timeMsg}\n\n您已访问本站 ${hours}小时${minutes}分钟`, '时间问候');
+        // 第2次：显示停留时长
+        showWin95Dialog(`您已访问本站 ${hours}小时${minutes}分钟`, '时间统计');
       }
       else if (timeClickCount === 3) {
-        showWin95Dialog('恭喜发现隐藏彩蛋！\n\n点击右上角 × 有惊喜', '恭喜！');
+        // 第3次：揭示彩蛋
+        showWin95Dialog('恭喜发现彩蛋！点击右上 × 有惊喜', '恭喜！');
         timeClickCount = 0; // 重置计数
       }
     });
