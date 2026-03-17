@@ -1069,7 +1069,7 @@ function showBlueScreen() {
   bsOverlay.style.left = '0';
   bsOverlay.style.width = '100%';
   bsOverlay.style.height = '100%';
-  bsOverlay.style.backgroundColor = '#0000aa'; // 经典蓝屏蓝
+  bsOverlay.style.backgroundColor = '#0000aa';
   bsOverlay.style.zIndex = '20000';
   bsOverlay.style.display = 'flex';
   bsOverlay.style.flexDirection = 'column';
@@ -1083,35 +1083,6 @@ function showBlueScreen() {
   bsOverlay.style.cursor = 'default';
   bsOverlay.style.lineHeight = '1.5';
   
-  // 蓝屏内容 - Win95经典样式
-  bsOverlay.innerHTML = `
-    <div style="width: 90%; max-width: 700px;">
-      <div style="font-size: 48px; margin-bottom: 30px; text-align: center; letter-spacing: 2px;">Oops!</div>
-      
-      <div style="margin-bottom: 25px; font-family: 'Fixedsys', monospace;">
-        A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00009E36. The current application will be terminated.
-      </div>
-      
-      <div style="margin-bottom: 25px; font-family: 'Fixedsys', monospace;">
-        * Press any key to continue<br>
-        * Press CTRL+ALT+DEL to restart your computer. You will lose any unsaved information in all applications.
-      </div>
-      
-      <div style="margin-bottom: 30px; font-family: 'Fixedsys', monospace; color: #ffffaa;">
-        * Welcome to dh.hellyell.com. This was just a little joke of ours.<br>
-        * Press any key to continue
-      </div>
-      
-      <div style="font-size: 18px; color: #ffffff; text-align: center; margin-top: 20px; animation: blink 1s infinite;">
-        
-      </div>
-      
-      <div style="font-size: 16px; color: #ffffaa; text-align: center; margin-top: 10px;">
-        吓着你了吧 ^_^ 按任意键或点击鼠标返回，又或者你别动，放着我来~
-      </div>
-    </div>
-  `;
-  
   // 添加闪烁光标动画
   const style = document.createElement('style');
   style.innerHTML = `
@@ -1122,6 +1093,31 @@ function showBlueScreen() {
     }
   `;
   document.head.appendChild(style);
+  
+  // 蓝屏内容
+  bsOverlay.innerHTML = `
+    <div style="width: 90%; max-width: 700px;">
+      <div style="font-size: 48px; margin-bottom: 30px; text-align: center; letter-spacing: 2px;">Windows 95</div>
+      
+      <div style="margin-bottom: 25px; font-family: 'Fixedsys', monospace;">
+        A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00009E36. The current application will be terminated.
+      </div>
+      
+      <div style="margin-bottom: 25px; font-family: 'Fixedsys', monospace;">
+        Press CTRL+ALT+DEL to restart your computer. You will lose any unsaved information in all applications.
+      </div>
+      
+      <div style="margin-bottom: 30px; font-family: 'Fixedsys', monospace; color: #ffffaa;">
+        * Welcome to dh.hellyell.com. This was just a little joke of ours.<br>
+        * Press any key to continue
+      </div>
+      
+      <div style="font-size: 16px; color: #ffffaa; text-align: center; margin-bottom: 5px;">
+        吓着你了吧 ^_^ 按任意键或点击鼠标返回，又或者你别动，放着我来~
+        <span style="display: inline-block; width: 12px; height: 18px; background-color: #ffffff; margin-left: 4px; animation: blink 1s infinite; vertical-align: middle;"></span>
+      </div>
+    </div>
+  `;
   
   document.body.appendChild(bsOverlay);
   
@@ -1145,7 +1141,7 @@ function showBlueScreen() {
   document.addEventListener('keydown', keyHandler);
   document.addEventListener('click', clickHandler);
   
-  // 10秒后自动关闭（以防万一）
+  // 10秒后自动关闭
   setTimeout(closeBlueScreen, 10000);
 }
     // ========== 非Windows设备强制提示窗 ==========
