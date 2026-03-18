@@ -1009,7 +1009,7 @@
       }
     })();
 
-    // ========== 音乐播放器控制（加载远程播放列表）==========
+// ========== 音乐播放器控制（随机播放模式）==========
 const audio = document.getElementById('bgMusic');
 const speakerBtn = document.getElementById('speakerIcon');
 let huaijiuPlaylist = [];
@@ -1026,11 +1026,26 @@ async function loadPlaylist() {
     huaijiuPlaylist = await response.json();
     console.log('播放列表加载成功，共', huaijiuPlaylist.length, '首歌曲');
     if (huaijiuPlaylist.length > 0) {
-      audio.src = huaijiuPlaylist[0].url;
+      // 随机选择第一首歌
+      currentSongIndex = Math.floor(Math.random() * huaijiuPlaylist.length);
+      audio.src = huaijiuPlaylist[currentSongIndex].url;
+      console.log('初始随机歌曲:', huaijiuPlaylist[currentSongIndex].name);
     }
   } catch (error) {
     console.error('加载播放列表失败:', error);
   }
+}
+
+// 获取随机索引（确保不和当前歌曲重复）
+function getRandomSongIndex() {
+  if (huaijiuPlaylist.length === 1) return 0;
+  
+  let newIndex;
+  do {
+    newIndex = Math.floor(Math.random() * huaijiuPlaylist.length);
+  } while (newIndex === currentSongIndex); // 避免连续播放同一首
+  
+  return newIndex;
 }
 
 // 监测播放进度
@@ -1060,7 +1075,7 @@ function startProgressMonitor() {
   }, 500);
 }
 
-// 播放下一首
+// 播放下一首（随机选择）
 function playNextSong() {
   if (huaijiuPlaylist.length === 0) return;
   
@@ -1070,9 +1085,10 @@ function playNextSong() {
     progressTimer = null;
   }
   
-  // 计算下一首
-  const nextIndex = (currentSongIndex + 1) % huaijiuPlaylist.length;
-  console.log(`切换到下一首: ${currentSongIndex} → ${nextIndex}`);
+  // 获取随机索引
+  const nextIndex = getRandomSongIndex();
+  console.log(`随机切换: ${currentSongIndex} → ${nextIndex}`);
+  console.log('下一首歌:', huaijiuPlaylist[nextIndex].name);
   
   currentSongIndex = nextIndex;
   audio.src = huaijiuPlaylist[currentSongIndex].url;
@@ -1119,6 +1135,7 @@ speakerBtn.addEventListener('click', function(e) {
       lastTime = 0;
       stalledCount = 0;
       startProgressMonitor();
+      console.log('正在播放:', huaijiuPlaylist[currentSongIndex].name);
     }).catch(error => {
       console.error('播放失败:', error);
       showWin95Dialog('无法播放音乐，请检查网络', '提示');
