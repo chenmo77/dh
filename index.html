@@ -1009,40 +1009,51 @@
       }
     })();
 
-// ========== 音乐播放器控制（随机播放模式+趣味提示）==========
+// ========== 音乐播放器控制（双列表随机播放+趣味提示）==========
 const audio = document.getElementById('bgMusic');
 const speakerBtn = document.getElementById('speakerIcon');
-let huaijiuPlaylist = [];
+let masterPlaylist = []; // 合并后的总播放列表
 let currentSongIndex = 0;
 let isPlaying = false;
 let progressTimer = null;
 let lastTime = 0;
 let stalledCount = 0;
 
-// 从 radio.hellyell.com 加载播放列表
-async function loadPlaylist() {
+// 从 radio.hellyell.com 加载所有播放列表并合并
+async function loadAllPlaylists() {
   try {
-    const response = await fetch('https://radio.hellyell.com/huaijiu-musiclist.json');
-    huaijiuPlaylist = await response.json();
-    console.log('播放列表加载成功，共', huaijiuPlaylist.length, '首歌曲');
-    if (huaijiuPlaylist.length > 0) {
+    // 并行加载两个JSON文件
+    const [huaijiuResponse, qicheResponse] = await Promise.all([
+      fetch('https://radio.hellyell.com/huaijiu-musiclist.json'),
+      fetch('https://radio.hellyell.com/qiche-musiclist.json')
+    ]);
+    
+    const huaijiuList = await huaijiuResponse.json();
+    const qicheList = await qicheResponse.json();
+    
+    // 合并两个列表
+    masterPlaylist = [...huaijiuList, ...qicheList];
+    console.log('播放列表加载成功，怀旧音乐:', huaijiuList.length, '首, 汽车音乐:', qicheList.length, '首, 总计:', masterPlaylist.length, '首歌曲');
+    
+    if (masterPlaylist.length > 0) {
       // 随机选择第一首歌
-      currentSongIndex = Math.floor(Math.random() * huaijiuPlaylist.length);
-      audio.src = huaijiuPlaylist[currentSongIndex].url;
-      console.log('初始随机歌曲:', huaijiuPlaylist[currentSongIndex].name);
+      currentSongIndex = Math.floor(Math.random() * masterPlaylist.length);
+      audio.src = masterPlaylist[currentSongIndex].url;
+      console.log('初始随机歌曲:', masterPlaylist[currentSongIndex].name);
     }
   } catch (error) {
     console.error('加载播放列表失败:', error);
+    // 可以提示用户，但不阻塞页面
   }
 }
 
 // 获取随机索引（确保不和当前歌曲重复）
 function getRandomSongIndex() {
-  if (huaijiuPlaylist.length === 1) return 0;
+  if (masterPlaylist.length === 1) return 0;
   
   let newIndex;
   do {
-    newIndex = Math.floor(Math.random() * huaijiuPlaylist.length);
+    newIndex = Math.floor(Math.random() * masterPlaylist.length);
   } while (newIndex === currentSongIndex); // 避免连续播放同一首
   
   return newIndex;
@@ -1077,7 +1088,7 @@ function startProgressMonitor() {
 
 // 播放下一首（随机选择）
 function playNextSong() {
-  if (huaijiuPlaylist.length === 0) return;
+  if (masterPlaylist.length === 0) return;
   
   // 清除进度监测
   if (progressTimer) {
@@ -1088,10 +1099,10 @@ function playNextSong() {
   // 获取随机索引
   const nextIndex = getRandomSongIndex();
   console.log(`随机切换: ${currentSongIndex} → ${nextIndex}`);
-  console.log('下一首歌:', huaijiuPlaylist[nextIndex].name);
+  console.log('下一首歌:', masterPlaylist[nextIndex].name);
   
   currentSongIndex = nextIndex;
-  audio.src = huaijiuPlaylist[currentSongIndex].url;
+  audio.src = masterPlaylist[currentSongIndex].url;
   
   if (isPlaying) {
     audio.play().then(() => {
@@ -1162,8 +1173,8 @@ speakerBtn.addEventListener('click', function(e) {
   e.stopPropagation();
   
   // 音乐播放逻辑
-  if (huaijiuPlaylist.length === 0) {
-    loadPlaylist();
+  if (masterPlaylist.length === 0) {
+    loadAllPlaylists();
     showWin95Dialog('播放列表加载中，请稍后点击', '提示');
     return;
   }
@@ -1177,7 +1188,7 @@ speakerBtn.addEventListener('click', function(e) {
       lastTime = 0;
       stalledCount = 0;
       startProgressMonitor();
-      console.log('正在播放:', huaijiuPlaylist[currentSongIndex].name);
+      console.log('正在播放:', masterPlaylist[currentSongIndex].name);
       
       // 显示播放提示
       showTip('好听的音乐开始咯:)');
@@ -1202,7 +1213,7 @@ speakerBtn.addEventListener('click', function(e) {
 });
 
 // 页面加载时自动加载播放列表
-loadPlaylist();
+loadAllPlaylists();
   </script>
 </body>
 </html>
