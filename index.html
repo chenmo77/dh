@@ -1388,7 +1388,7 @@ function showBlueScreen() {
 
 // ========== 音乐播放器控制（加载远程播放列表）==========
 const audio = document.getElementById('bgMusic');
-const speakerIcon = document.getElementById('speakerIcon');
+const speakerBtn = document.getElementById('speakerIcon');  // 修改这里
 let huaijiuPlaylist = [];
 let currentSongIndex = 0;
 let isPlaying = false;
@@ -1406,8 +1406,6 @@ async function loadPlaylist() {
     }
   } catch (error) {
     console.error('加载播放列表失败:', error);
-    // 可以在这里用 showWin95Dialog 提示用户，但为避免干扰，先注释掉
-    // showWin95Dialog('加载音乐列表失败，请稍后重试', '提示');
   }
 }
 
@@ -1420,28 +1418,27 @@ function playNextSong() {
   if (isPlaying) {
     audio.play().catch(error => {
       console.log('播放失败，尝试下一首:', error);
-      playNextSong(); // 如果当前歌曲播放失败，自动尝试下一首
+      playNextSong();
     });
   }
 }
 
-// 监听歌曲播放结束，自动播放下一首
+// 监听歌曲播放结束
 audio.addEventListener('ended', function() {
   playNextSong();
 });
 
-// 监听播放错误，自动跳过当前歌曲
+// 监听播放错误
 audio.addEventListener('error', function() {
   console.log('播放错误，自动跳过当前歌曲');
   playNextSong();
 });
 
-speakerIcon.addEventListener('click', function(e) {
+speakerBtn.addEventListener('click', function(e) {  // 修改这里
   e.stopPropagation();
   
-  // 如果列表还没加载完，先提示（可选）
   if (huaijiuPlaylist.length === 0) {
-    loadPlaylist(); // 尝试加载
+    loadPlaylist();
     showWin95Dialog('播放列表加载中，请稍后点击', '提示');
     return;
   }
@@ -1449,8 +1446,8 @@ speakerIcon.addEventListener('click', function(e) {
   if (!isPlaying) {
     audio.play().then(() => {
       isPlaying = true;
-      speakerIcon.classList.add('active');
-      speakerIcon.textContent = '🔊';
+      speakerBtn.classList.add('active');  // 修改这里
+      speakerBtn.textContent = '🔊';       // 修改这里
     }).catch(error => {
       console.log('播放失败:', error);
       showWin95Dialog('无法播放音乐，请检查网络', '提示');
@@ -1458,8 +1455,8 @@ speakerIcon.addEventListener('click', function(e) {
   } else {
     audio.pause();
     isPlaying = false;
-    speakerIcon.classList.remove('active');
-    speakerIcon.textContent = '🔇';
+    speakerBtn.classList.remove('active');  // 修改这里
+    speakerBtn.textContent = '🔇';          // 修改这里
   }
 });
 
