@@ -1118,17 +1118,16 @@ audio.addEventListener('error', function() {
   playNextSong();
 });
 
-speakerBtn.addEventListener('click', function(e) {
-  e.stopPropagation();
-  
+// 显示提示信息的函数
+function showTip(message) {
   // 获取喇叭按钮的位置
   const rect = speakerBtn.getBoundingClientRect();
   
   // 创建提示元素
   const tip = document.createElement('div');
-  tip.innerText = '被你发现啦:)';
+  tip.innerText = message;
   tip.style.position = 'absolute';
-  tip.style.left = (rect.left + rect.width / 2 - 60) + 'px'; // 居中显示（按提示宽度120px计算）
+  tip.style.left = (rect.left + rect.width / 2 - 70) + 'px'; // 居中显示
   tip.style.top = (rect.top - 35) + 'px'; // 在喇叭上方35px
   tip.style.background = '#ffffe0';
   tip.style.border = '2px solid #000080';
@@ -1141,27 +1140,26 @@ speakerBtn.addEventListener('click', function(e) {
   tip.style.zIndex = '10001';
   tip.style.opacity = '1';
   tip.style.transition = 'opacity 0.5s';
-  tip.style.whiteSpace = 'nowrap'; // 防止文字换行
+  tip.style.whiteSpace = 'nowrap';
   
   // 添加到页面
   document.body.appendChild(tip);
   
-  // 3秒后改为“好听的歌曲开始咯~”
-  setTimeout(() => {
-    tip.innerText = '好听的歌曲开始咯~';
-  }, 3000);
-  
-  // 3秒后开始淡出
+  // 1.5秒后开始淡出
   setTimeout(() => {
     tip.style.opacity = '0';
-  }, 3000);
+  }, 1500);
   
-  // 3秒后移除元素
+  // 2秒后移除元素
   setTimeout(() => {
     if (document.body.contains(tip)) {
       document.body.removeChild(tip);
     }
-  }, 3000);
+  }, 2000);
+}
+
+speakerBtn.addEventListener('click', function(e) {
+  e.stopPropagation();
   
   // 音乐播放逻辑
   if (huaijiuPlaylist.length === 0) {
@@ -1171,6 +1169,7 @@ speakerBtn.addEventListener('click', function(e) {
   }
   
   if (!isPlaying) {
+    // 播放状态
     audio.play().then(() => {
       isPlaying = true;
       speakerBtn.classList.add('active');
@@ -1179,11 +1178,15 @@ speakerBtn.addEventListener('click', function(e) {
       stalledCount = 0;
       startProgressMonitor();
       console.log('正在播放:', huaijiuPlaylist[currentSongIndex].name);
+      
+      // 显示播放提示
+      showTip('好听的音乐开始咯:)');
     }).catch(error => {
       console.error('播放失败:', error);
       showWin95Dialog('无法播放音乐，请检查网络', '提示');
     });
   } else {
+    // 暂停状态
     audio.pause();
     isPlaying = false;
     speakerBtn.classList.remove('active');
@@ -1192,6 +1195,9 @@ speakerBtn.addEventListener('click', function(e) {
       clearInterval(progressTimer);
       progressTimer = null;
     }
+    
+    // 显示暂停提示
+    showTip('休息，休息一下~');
   }
 });
 
