@@ -941,36 +941,85 @@
     });
   }
 })();
-      // ========== 音乐播放器控制 ==========
-      const audio = document.getElementById('bgMusic');
-      const speakerIcon = document.getElementById('speakerIcon');
-      let isPlaying = false;
+      // ========== 音乐播放器控制（加载远程播放列表）==========
+const audio = document.getElementById('bgMusic');
+const speakerIcon = document.getElementById('speakerIcon');
+let huaijiuPlaylist = [];
+let currentSongIndex = 0;
+let isPlaying = false;
 
-      speakerIcon.addEventListener('click', function(e) {
-        e.stopPropagation();
-        
-        if (!isPlaying) {
-          // 尝试播放
-          audio.play().then(() => {
-            isPlaying = true;
-            speakerIcon.classList.add('active');
-            speakerIcon.textContent = '🔊';
-          }).catch(error => {
-            console.log('播放失败:', error);
-            alert('无法播放音乐，请检查网络或浏览器设置');
-          });
-        } else {
-          // 暂停
-          audio.pause();
-          isPlaying = false;
-          speakerIcon.classList.remove('active');
-          speakerIcon.textContent = '🔇';
-        }
-      });
+// 从 radio.hellyell.com 加载播放列表
+async function loadPlaylist() {
+  try {
+    const response = await fetch('https://radio.hellyell.com/huaijiu-musiclist.json');
+    huaijiuPlaylist = await response.json();
+    console.log('播放列表加载成功，共', huaijiuPlaylist.length, '首歌曲');
+    
+    // 预加载第一首歌
+    if (huaijiuPlaylist.length > 0) {
+      audio.src = huaijiuPlaylist[0].url;
+    }
+  } catch (error) {
+    console.error('加载播放列表失败:', error);
+    // 可以在这里用 showWin95Dialog 提示用户，但为避免干扰，先注释掉
+    // showWin95Dialog('加载音乐列表失败，请稍后重试', '提示');
+  }
+}
 
-      // 自动播放策略：浏览器通常禁止自动播放，需要用户交互
-      // 所以第一次点击喇叭才会开始播放
-    })();
+// 播放下一首
+function playNextSong() {
+  if (huaijiuPlaylist.length === 0) return;
+  
+  currentSongIndex = (currentSongIndex + 1) % huaijiuPlaylist.length;
+  audio.src = huaijiuPlaylist[currentSongIndex].url;
+  if (isPlaying) {
+    audio.play().catch(error => {
+      console.log('播放失败，尝试下一首:', error);
+      playNextSong(); // 如果当前歌曲播放失败，自动尝试下一首
+    });
+  }
+}
+
+// 监听歌曲播放结束，自动播放下一首
+audio.addEventListener('ended', function() {
+  playNextSong();
+});
+
+// 监听播放错误，自动跳过当前歌曲
+audio.addEventListener('error', function() {
+  console.log('播放错误，自动跳过当前歌曲');
+  playNextSong();
+});
+
+speakerIcon.addEventListener('click', function(e) {
+  e.stopPropagation();
+  
+  // 如果列表还没加载完，先提示（可选）
+  if (huaijiuPlaylist.length === 0) {
+    loadPlaylist(); // 尝试加载
+    showWin95Dialog('播放列表加载中，请稍后点击', '提示');
+    return;
+  }
+  
+  if (!isPlaying) {
+    audio.play().then(() => {
+      isPlaying = true;
+      speakerIcon.classList.add('active');
+      speakerIcon.textContent = '🔊';
+    }).catch(error => {
+      console.log('播放失败:', error);
+      showWin95Dialog('无法播放音乐，请检查网络', '提示');
+    });
+  } else {
+    audio.pause();
+    isPlaying = false;
+    speakerIcon.classList.remove('active');
+    speakerIcon.textContent = '🔇';
+  }
+});
+
+// 页面加载时自动加载播放列表
+loadPlaylist();
 // ========== Win95风格弹窗 ==========
 function showWin95Dialog(message) {
   // 创建遮罩层
