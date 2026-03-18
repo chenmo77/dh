@@ -1121,12 +1121,15 @@ audio.addEventListener('error', function() {
 speakerBtn.addEventListener('click', function(e) {
   e.stopPropagation();
   
+  // 获取喇叭按钮的位置
+  const rect = speakerBtn.getBoundingClientRect();
+  
   // 创建提示元素
   const tip = document.createElement('div');
   tip.innerText = '被你发现啦:)';
   tip.style.position = 'absolute';
-  tip.style.bottom = '40px';
-  tip.style.right = '120px';
+  tip.style.left = (rect.left + rect.width / 2 - 60) + 'px'; // 居中显示（按提示宽度120px计算）
+  tip.style.top = (rect.top - 35) + 'px'; // 在喇叭上方35px
   tip.style.background = '#ffffe0';
   tip.style.border = '2px solid #000080';
   tip.style.borderRadius = '4px';
@@ -1138,28 +1141,29 @@ speakerBtn.addEventListener('click', function(e) {
   tip.style.zIndex = '10001';
   tip.style.opacity = '1';
   tip.style.transition = 'opacity 0.5s';
+  tip.style.whiteSpace = 'nowrap'; // 防止文字换行
   
   // 添加到页面
   document.body.appendChild(tip);
   
-  // 0.8秒后改为“好听的歌曲开始咯~”
+  // 3秒后改为“好听的歌曲开始咯~”
   setTimeout(() => {
     tip.innerText = '好听的歌曲开始咯~';
-  }, 800);
+  }, 3000);
   
-  // 2秒后开始淡出
+  // 3秒后开始淡出
   setTimeout(() => {
     tip.style.opacity = '0';
-  }, 2000);
+  }, 3000);
   
-  // 2.5秒后移除元素
+  // 3秒后移除元素
   setTimeout(() => {
     if (document.body.contains(tip)) {
       document.body.removeChild(tip);
     }
-  }, 2500);
+  }, 3000);
   
-  // 原有的音乐播放逻辑
+  // 音乐播放逻辑
   if (huaijiuPlaylist.length === 0) {
     loadPlaylist();
     showWin95Dialog('播放列表加载中，请稍后点击', '提示');
